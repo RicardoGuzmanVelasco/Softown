@@ -1,5 +1,7 @@
-﻿using Softown.Runtime.Domain;
+﻿using NUnit.Framework;
+using Softown.Runtime.Domain;
 using UnityEngine;
+using static UnityEngine.PrimitiveType;
 
 namespace Softown.Runtime.Infrastructure
 {
@@ -11,8 +13,14 @@ namespace Softown.Runtime.Infrastructure
 
         public void Raise(Blueprint blueprint)
         {
-            transform.localScale = new(blueprint.FoundationsWidth, blueprint.Floors, blueprint.FoundationsWidth);
+            GameObject.CreatePrimitive(Cube).transform.SetParent(transform);
+            
+            //Se suma la escala porque se considera que el suelo es un piso inicial.
+            transform.localScale += new Vector3(blueprint.FoundationsWidth, blueprint.Floors, blueprint.FoundationsWidth);
             transform.position += Vector3.up * (blueprint.Floors / 2f);
+            
+            Assert.IsTrue(FoundationsWidth > 0);
+            Assert.IsTrue(Floors > 0);
         }
     }
 }

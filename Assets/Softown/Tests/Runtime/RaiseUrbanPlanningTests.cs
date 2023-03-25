@@ -15,7 +15,7 @@ namespace Softown.Tests.Runtime
         {
             Object.FindObjectsOfType<Neighbourhood>()
                 .ToList()
-                .ForEach(n => Object.Destroy(n.gameObject));
+                .ForEach(n => Object.DestroyImmediate(n.gameObject));
         }
 
         [Test]
@@ -28,16 +28,19 @@ namespace Softown.Tests.Runtime
 
             Object.FindObjectsOfType<Building>().Should().HaveCount(5);
         }
-        
+
         [Test]
         public void Buildings_NeverHave_SameCenter()
         {
             var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
             var urbanPlanning = new Architect().Design(new PackageSummary(typeof(TwoMethods).Assembly));
 
+            sut.Raise(urbanPlanning);
+            
             Object.FindObjectsOfType<Building>()
-                .Select(b => b.transform.position)
-                .Should().OnlyHaveUniqueItems();
+                .Select(b => b.transform.position.XZ())
+                .Should().OnlyHaveUniqueItems()
+                .And.NotBeEmpty();
         }
     }
 }

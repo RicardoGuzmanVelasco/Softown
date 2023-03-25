@@ -1,4 +1,6 @@
-﻿using Softown.Runtime.Domain;
+﻿using FluentAssertions;
+using NUnit.Framework;
+using Softown.Runtime.Domain;
 using Softown.Tests.TestAPI;
 
 namespace Softown.Tests.Editor

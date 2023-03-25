@@ -7,7 +7,7 @@ namespace Softown.Runtime.Infrastructure
     {
         public void Raise(Blueprint blueprint)
         {
-            transform.localScale = new(blueprint.foundationsWidth, blueprint.floors, blueprint.foundationsWidth);
+            transform.localScale = new(blueprint.FoundationsWidth, blueprint.Floors, blueprint.FoundationsWidth);
         }
     }
 }

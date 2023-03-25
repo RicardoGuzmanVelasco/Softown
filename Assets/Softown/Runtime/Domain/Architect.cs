@@ -1,10 +1,15 @@
-﻿namespace Softown.Runtime.Domain
+﻿using UnityEngine.Assertions;
+using static Softown.Runtime.Domain.ClassSummary;
+
+namespace Softown.Runtime.Domain
 {
     public class Architect
     {
         public Blueprint Design(ClassSummary classSummary)
         {
-            return new Blueprint(classSummary.PublicMethods, classSummary.Properties);
+            Assert.IsFalse(classSummary.Equals(Empty));
+            
+            return new(classSummary.PublicMethods, classSummary.Properties);
         }
     }
 }

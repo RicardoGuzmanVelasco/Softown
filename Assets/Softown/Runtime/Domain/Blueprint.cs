@@ -1,14 +1,19 @@
-﻿namespace Softown.Runtime.Domain
+﻿using UnityEngine.Assertions;
+
+namespace Softown.Runtime.Domain
 {
-    public struct Blueprint
+    public readonly struct Blueprint
     {
-        public readonly int floors;
-        public readonly int foundationsWidth;
-        
+        public int Floors { get; }
+        public int FoundationsWidth { get; }
+
         public Blueprint(int floors, int foundationsWidth)
         {
-            this.floors = floors;
-            this.foundationsWidth = foundationsWidth;
+            Assert.IsTrue(floors > 0);
+            Assert.IsTrue(foundationsWidth > 0);
+            
+            this.Floors = floors;
+            this.FoundationsWidth = foundationsWidth;
         }
     }
 }

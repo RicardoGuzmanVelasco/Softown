@@ -1,5 +1,8 @@
-﻿using Softown.Runtime.Domain;
+﻿using FluentAssertions;
+using NUnit.Framework;
+using Softown.Runtime.Domain;
 using Softown.Runtime.Infrastructure;
+using UnityEngine;
 
 namespace Softown.Tests.Runtime
 {
@@ -11,8 +14,6 @@ namespace Softown.Tests.Runtime
             var classSummary = new ClassSummary(typeof(TwoMethods_AndOneProperty));
             var building = new GameObject("", typeof(Building)).GetComponent<Building>();
 
-            new Blueprint(-1, 0);
-            
             var blueprint = new Architect().Design(classSummary);
             building.Raise(blueprint: blueprint);
 

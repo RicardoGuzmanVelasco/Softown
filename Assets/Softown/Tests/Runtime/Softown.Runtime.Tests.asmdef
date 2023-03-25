@@ -1,5 +1,5 @@
 {
-    "name": "Softown.Tests",
+    "name": "Softown.Runtime.Tests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",

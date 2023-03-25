@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Softown.Runtime.Domain;
+using UnityEngine;
 
 namespace Softown.Runtime.Infrastructure
 {
@@ -12,6 +13,11 @@ namespace Softown.Runtime.Infrastructure
         public void Raise(int floors)
         {
             Raise(floors, 1);
+        }
+
+        public void Raise(Blueprint blueprint)
+        {
+            Raise(blueprint.floors, blueprint.foundationsWidth);
         }
     }
 }

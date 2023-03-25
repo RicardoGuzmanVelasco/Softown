@@ -9,15 +9,21 @@ namespace Softown.Tests.Editor
         [Test]
         public void Obtain_MethodsAmount_FromClass()
         {
-            new Class(typeof(TwoMethods)).PublicMethods.Should().Be(2);
-            new Class(typeof(ThreeMethods)).PublicMethods.Should().Be(3);
+            new ClassSummary(typeof(TwoMethods)).PublicMethods.Should().Be(2);
+            new ClassSummary(typeof(ThreeMethods)).PublicMethods.Should().Be(3);
         }
-        
+
+        [Test]
+        public void Obtain_MethodsAmount_Ignores_Properties()
+        {
+            new ClassSummary(typeof(TwoProperties)).PublicMethods.Should().Be(0);
+        }
+
         [Test]
         public void Obtain_Properties_FromClass()
         {
-            new Class(typeof(TwoProperties)).Properties.Should().Be(2);
-            new Class(typeof(ThreeProperties)).Properties.Should().Be(3);
+            new ClassSummary(typeof(TwoProperties)).Properties.Should().Be(2);
+            new ClassSummary(typeof(ThreeProperties)).Properties.Should().Be(3);
         }
 
         public class TwoProperties

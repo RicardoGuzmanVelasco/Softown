@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Softown.Runtime.Infrastructure;
@@ -8,6 +9,14 @@ namespace Softown.Tests.Runtime
     public class RaiseBuildingTests
     {
         Building sut;
+
+        [TearDown]
+        public void TearDown()
+        {
+            Object.FindObjectsOfType<Building>()
+                .ToList()
+                .ForEach(n => Object.Destroy(n.gameObject));
+        }
 
         [SetUp]
         public void Setup()

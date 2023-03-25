@@ -1,5 +1,5 @@
-﻿using UnityEngine.Assertions;
-using static Softown.Runtime.Domain.ClassSummary;
+﻿using System.Linq;
+using UnityEngine.Assertions;
 
 namespace Softown.Runtime.Domain
 {
@@ -7,9 +7,16 @@ namespace Softown.Runtime.Domain
     {
         public Blueprint Design(ClassSummary classSummary)
         {
-            Assert.IsFalse(classSummary.Equals(Empty));
+            Assert.IsFalse(classSummary.Equals(ClassSummary.Empty));
             
             return new(classSummary.PublicMethods, classSummary.Properties);
+        }
+        
+        public UrbanPlanning Design(PackageSummary packageSummary)
+        {
+            Assert.IsFalse(packageSummary.Equals(PackageSummary.Empty));
+            
+            return new(packageSummary.Select(Design));
         }
     }
 }

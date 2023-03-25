@@ -9,11 +9,13 @@ namespace Softown.Runtime.Domain
 
         public Blueprint(int floors, int foundationsWidth)
         {
-            Assert.IsTrue(floors > 0);
-            Assert.IsTrue(foundationsWidth > 0);
-            
+            Assert.IsTrue(floors >= 0);
+            Assert.IsTrue(foundationsWidth >= 0);
+
             this.Floors = floors;
             this.FoundationsWidth = foundationsWidth;
         }
+
+        public static Blueprint Blank => new();
     }
 }

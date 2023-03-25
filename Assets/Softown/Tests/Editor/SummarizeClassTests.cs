@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using Softown.Runtime.Domain;
+using Softown.Tests.TestAPI;
 
 namespace Softown.Tests.Editor
 {
@@ -24,32 +25,6 @@ namespace Softown.Tests.Editor
         {
             new ClassSummary(typeof(TwoProperties)).Properties.Should().Be(2);
             new ClassSummary(typeof(ThreeProperties)).Properties.Should().Be(3);
-        }
-
-        public class TwoProperties
-        {
-            public int Property_1 { get; set; }
-            public int Property_2 { get; set; }
-        }
-        
-        public class ThreeProperties
-        {
-            public int Property_1 { get; set; }
-            public int Property_2 { get; set; }
-            public int Property_3 { get; set; }
-        }
-        
-        public class TwoMethods
-        {
-            public void Method_1() { }
-            public void Method_2() { }
-        }
-        
-        public class ThreeMethods
-        {
-            public void Method_1() { }
-            public void Method_2() { }
-            public void Method_3() { }
         }
     }
 }

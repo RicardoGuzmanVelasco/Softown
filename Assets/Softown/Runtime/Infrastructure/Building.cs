@@ -7,6 +7,7 @@ namespace Softown.Runtime.Infrastructure
     {
         public int Floors => (int)transform.localScale.y;
         public int FoundationsWidth => ((int)transform.localScale.x + (int)transform.localScale.z) / 2;
+        public float WhereIsTheGround => transform.position.y;
 
         public void Raise(Blueprint blueprint)
         {

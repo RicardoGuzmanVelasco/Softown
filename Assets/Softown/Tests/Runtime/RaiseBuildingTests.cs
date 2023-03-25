@@ -49,7 +49,7 @@ namespace Softown.Tests.Runtime
         {
             sut.Raise(blueprint: new(4, 2));
 
-            sut.transform.position.y.Should().Be(4f / 2f);
+            sut.WhereIsTheGround.Should().Be(4f / 2f);
         }
     }
 }

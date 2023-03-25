@@ -25,7 +25,7 @@ namespace Softown.Tests.Runtime
         [Test]
         public void Raise_ABuilding_With_2Floors()
         {
-            sut.Raise(floors: 2);
+            sut.Raise(blueprint: new(2, 1));
 
             sut.transform.localScale.y.Should().Be(2);
         }
@@ -40,7 +40,7 @@ namespace Softown.Tests.Runtime
         [Test]
         public void Raise_ABuilding_With_ADifferent_Foundation()
         {
-            sut.Raise(floors: 1, foundationsWidth: 2);
+            sut.Raise(blueprint: new(1, 2));
 
             sut.transform.localScale.x.Should().Be(2);
             sut.transform.localScale.z.Should().Be(2);

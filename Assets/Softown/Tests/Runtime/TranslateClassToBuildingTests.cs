@@ -1,8 +1,5 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using Softown.Runtime.Domain;
+﻿using Softown.Runtime.Domain;
 using Softown.Runtime.Infrastructure;
-using UnityEngine;
 
 namespace Softown.Tests.Runtime
 {
@@ -11,12 +8,13 @@ namespace Softown.Tests.Runtime
         [Test]
         public void Raise_ABuilding_From_AClass()
         {
-            var @class = new ClassSummary(typeof(TwoMethods_AndOneProperty));
+            var classSummary = new ClassSummary(typeof(TwoMethods_AndOneProperty));
             var building = new GameObject("", typeof(Building)).GetComponent<Building>();
-            var architect = new Architect();
+
+            new Blueprint(-1, 0);
             
-            var blueprint = architect.Design(@class);
-            building.Raise(blueprint);
+            var blueprint = new Architect().Design(classSummary);
+            building.Raise(blueprint: blueprint);
 
             building.transform.localScale.Should().Be(new Vector3(1, 2, 1));
         }

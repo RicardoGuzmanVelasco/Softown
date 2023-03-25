@@ -36,7 +36,7 @@ namespace Softown.Tests.Runtime
         {
             sut.Raise(blueprint: new(2, 1));
 
-            sut.Floors.Should().Be(2);
+            sut.Floors.Should().Be(2 + (int)Building.Ground.magnitude);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace Softown.Tests.Runtime
         {
             sut.Raise(blueprint: new(1, 2));
 
-            sut.FoundationsWidth.Should().Be(2);
+            sut.FoundationsWidth.Should().Be(2 + (int)Building.Ground.magnitude);
         }
 
         [Test]

@@ -7,19 +7,23 @@ namespace Softown.Runtime.Infrastructure
 {
     public class Building : MonoBehaviour
     {
+        public const int GroundSize = 1;
+        public static readonly Vector3 Ground = Vector3.one;
+
         public int Floors => (int)transform.localScale.y;
-        public int FoundationsWidth => ((int)transform.localScale.x + (int)transform.localScale.z) / 2;
+        public int FoundationsWidth => (int)transform.localScale.x;
         public float WhereIsTheGround => transform.position.y;
 
         public void Raise(Blueprint blueprint)
         {
             GameObject.CreatePrimitive(Cube).transform.SetParent(transform);
-            
-            //Se suma la escala porque se considera que el suelo es un piso inicial.
-            transform.localScale += new Vector3(blueprint.FoundationsWidth, blueprint.Floors, blueprint.FoundationsWidth);
+
+            transform.localScale =
+                Ground + new Vector3(blueprint.FoundationsWidth, blueprint.Floors, blueprint.FoundationsWidth);
             transform.position += Vector3.up * (blueprint.Floors / 2f);
-            
+
             Assert.IsTrue(FoundationsWidth > 0);
+            Assert.AreEqual(transform.localScale.x, transform.localScale.z);
             Assert.IsTrue(Floors > 0);
         }
     }

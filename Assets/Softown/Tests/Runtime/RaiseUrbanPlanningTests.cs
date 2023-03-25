@@ -26,7 +26,18 @@ namespace Softown.Tests.Runtime
 
             sut.Raise(urbanPlanning);
 
-            Object.FindObjectsOfType<Building>().Should().HaveCount(4);
+            Object.FindObjectsOfType<Building>().Should().HaveCount(5);
+        }
+        
+        [Test]
+        public void Buildings_NeverHave_SameCenter()
+        {
+            var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
+            var urbanPlanning = new Architect().Design(new PackageSummary(typeof(TwoMethods).Assembly));
+
+            Object.FindObjectsOfType<Building>()
+                .Select(b => b.transform.position)
+                .Should().OnlyHaveUniqueItems();
         }
     }
 }

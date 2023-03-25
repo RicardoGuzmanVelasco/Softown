@@ -13,7 +13,7 @@ namespace Softown.Runtime.Domain
             Assert.IsTrue(foundationsWidth >= 0);
 
             this.Floors = floors;
-            this.FoundationsWidth = foundationsWidth + 1;
+            this.FoundationsWidth = foundationsWidth;
         }
 
         public static Blueprint Blank => new();

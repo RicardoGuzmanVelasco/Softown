@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using Softown.Runtime.Domain;
+﻿using Softown.Runtime.Domain;
 using Softown.Tests.TestAPI;
 
 namespace Softown.Tests.Editor
@@ -20,7 +18,7 @@ namespace Softown.Tests.Editor
         {
             new Architect()
                 .Design(new PackageSummary(typeof(TwoMethods).Assembly))
-                .Buildings.Should().Be(4);
+                .Buildings.Should().Be(5);
         }
     }
 }

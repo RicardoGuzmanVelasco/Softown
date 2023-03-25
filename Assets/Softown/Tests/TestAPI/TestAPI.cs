@@ -25,4 +25,11 @@ namespace Softown.Tests.TestAPI
         public void Method_2() { }
         public void Method_3() { }
     }
+
+    public class TwoMethods_AndOneProperty
+    {
+        public int Property_1 { get; set; }
+        public void Method_1() { }
+        public void Method_2() { }
+    }
 }

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Infrastructure;
+using Softown.Tests.TestAPI;
 using UnityEngine;
 
 namespace Softown.Tests.Runtime
@@ -17,14 +18,7 @@ namespace Softown.Tests.Runtime
             var blueprint = new Architect().Design(classSummary);
             building.Raise(blueprint: blueprint);
 
-            building.transform.localScale.Should().Be(new Vector3(1, 2, 1));
-        }
-
-        public class TwoMethods_AndOneProperty
-        {
-            public int Property_1 { get; set; }
-            public void Method_1() { }
-            public void Method_2() { }
+            building.transform.localScale.Should().Be(Building.Ground + new Vector3(1, 2, 1));
         }
     }
 }

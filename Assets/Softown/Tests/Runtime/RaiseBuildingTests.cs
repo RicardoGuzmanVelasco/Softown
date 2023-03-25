@@ -19,7 +19,7 @@ namespace Softown.Tests.Runtime
         [Test]
         public void Building_Cannot_HaveScale0()
         {
-            sut.transform.localScale.y.Should().BePositive();
+            sut.Floors.Should().BePositive();
         }
 
         [Test]
@@ -27,14 +27,13 @@ namespace Softown.Tests.Runtime
         {
             sut.Raise(blueprint: new(2, 1));
 
-            sut.transform.localScale.y.Should().Be(2);
+            sut.Floors.Should().Be(2);
         }
 
         [Test]
         public void Building_Cannot_HaveFoundations_WithScale0()
         {
-            sut.transform.localScale.x.Should().BePositive();
-            sut.transform.localScale.z.Should().BePositive();
+            sut.FoundationsWidth.Should().BePositive();
         }
 
         [Test]
@@ -42,8 +41,15 @@ namespace Softown.Tests.Runtime
         {
             sut.Raise(blueprint: new(1, 2));
 
-            sut.transform.localScale.x.Should().Be(2);
-            sut.transform.localScale.z.Should().Be(2);
+            sut.FoundationsWidth.Should().Be(2);
+        }
+
+        [Test]
+        public void Raise_ABuilding_From_FloorLevel()
+        {
+            sut.Raise(blueprint: new(4, 2));
+
+            sut.transform.position.y.Should().Be(4f / 2f);
         }
     }
 }

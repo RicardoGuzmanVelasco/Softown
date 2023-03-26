@@ -29,6 +29,21 @@ namespace Softown.Runtime.Domain.Plotting
             
             return new(firstTwo.X, firstTwo.Y + space + foundations[2].Y);
         }
+        
+        public Foundation LineUp(IReadOnlyList<Foundation> foundations)
+        {
+            Assert.IsTrue(foundations.Any());
+
+            if(foundations.Count == 1)
+                return foundations.First();
+            
+            var (x, y) = (0, foundations.Max(f => f.Y));
+            foreach(var f in foundations)
+                x += f.X + space;
+            x -= space;
+            
+            return new(x, y);
+        }
 
         Foundation Compound2(IReadOnlyCollection<Foundation> foundations)
         {

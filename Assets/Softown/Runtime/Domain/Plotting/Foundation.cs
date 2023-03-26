@@ -26,7 +26,7 @@ namespace Softown.Runtime.Domain.Plotting
 
         public static implicit operator (int, int)(Foundation foundation)
         {
-            return (X: foundation.Size.x, Y: foundation.Size.y);
+            return (foundation.Size.x, foundation.Size.y);
         }
 
         public void Deconstruct(out int x, out int y)

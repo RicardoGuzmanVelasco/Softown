@@ -5,12 +5,11 @@ namespace Softown.Runtime.Domain.Plotting
 {
     public readonly struct Plot
     {
-        public IReadOnlyDictionary<(int x, int y), Foundation> Foundations { get; }
+        public IReadOnlyDictionary<(int x, int y), Foundation> Foundations => SettledFoundations.ToDictionary(x => x.At, x => x.Foundation);
+        public IEnumerable<SettledFoundation> SettledFoundations { get; }
 
-        public (int x, int y) Size => (X, Y);
-        public (int x, int y) Center => (X / 2, Y / 2);
-        int X => Foundations.Keys.Max(k => k.x) + Foundations.Values.Max(v => v.Size.x);
-        int Y => Foundations.Keys.Max(k => k.y) + Foundations.Values.Max(v => v.Size.y);
+        public (int x, int y) Size { get; }
+        public (float x, float y) Center => (Size.x / 2f, Size.y / 2f);
 
         public Plot(params SettledFoundation[] foundations) : this((IEnumerable<SettledFoundation>) foundations) { }
         
@@ -19,7 +18,12 @@ namespace Softown.Runtime.Domain.Plotting
         
         public Plot(IReadOnlyDictionary<(int x, int y), Foundation> foundations)
         {
-            Foundations = foundations;
+            SettledFoundations = foundations.Select(x => new SettledFoundation(x.Key, x.Value));
+            Size = 
+            (
+                x: SettledFoundations.Max(s => s.At).x + SettledFoundations.Max(v => v.Foundation.Size.x),
+                y: SettledFoundations.Max(s => s.At).y + SettledFoundations.Max(v => v.Foundation.Size.y)
+            );
         }
 
         public static Plot Blank => new();

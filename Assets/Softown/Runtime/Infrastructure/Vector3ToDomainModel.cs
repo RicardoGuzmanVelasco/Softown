@@ -12,7 +12,12 @@ namespace Softown.Runtime.Infrastructure
         }
         public static Vector3 To3DWithY(this (int x, int y) tuple, float y)
         {
-            return new Vector3(tuple.x, y, tuple.y);
+            return new(tuple.x, y, tuple.y);
+        }
+        
+        public static Vector3 To3DWithY(this (float x, float y) tuple, float y)
+        {
+            return new(tuple.x, y, tuple.y);
         }
         
         public static Foundation ToFoundation(this Vector3 vector)

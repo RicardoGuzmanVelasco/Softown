@@ -14,16 +14,16 @@ namespace Softown.Runtime.Infrastructure
 
             var blueprints = urbanPlanning.ToList();
 
-            foreach(var f in plot.Foundations)
+            foreach(var f in plot.SettledFoundations)
             {
-                var selected = blueprints.First(b => b.FoundationsWidth == f.Value.Size.x);
+                var selected = blueprints.First(b => b.FoundationsWidth == f.Foundation.Size.x);
                 blueprints.Remove(selected);
 
                 var building = new GameObject(selected.BuildingName, typeof(Building)).GetComponent<Building>();
                 building.transform.SetParent(transform);
                 building.Raise(selected);
 
-                building.transform.position += f.Key.To3DWithY(0);
+                building.transform.position += f.At.To3DWithY(0);
             }
 
             SpawnGroundFor(plot);
@@ -34,7 +34,7 @@ namespace Softown.Runtime.Infrastructure
             var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
             ground.name = "Ground";
             ground.transform.SetParent(transform);
-            ground.GetComponent<MeshRenderer>().material.color = Color.green;
+            ground.GetComponent<MeshRenderer>().material.color = Color.green * Color.gray;
             ground.transform.position += plot.Center.To3DWithY(-0.5f);
             ground.transform.localScale = plot.Center.To3DWithY(0.1f);
         }

@@ -1,0 +1,42 @@
+﻿@startuml
+skin rose
+
+
+package Urbanism{
+    boundary Building
+    'le pongo el as para poder cambiar fácilmente al nombre original (tb Building).
+    entity "Blueprint" as Blueprint
+    
+    Building ..> Blueprint : raises\nfrom
+    
+    entity Architect
+    
+    'le pongo el as para poder cambiar fácilmente al nombre original (Soil).
+    boundary Neighbourhood as Neighborhood
+    'le pongo el as para poder cambiar fácilmente al nombre original (tb Neighborhood).
+    entity "UrbanPlanning" as UrbanPlanning
+    
+    Neighborhood ..> UrbanPlanning : raises\nfrom
+    
+    Neighborhood *-- Building
+    UrbanPlanning *-- Blueprint
+}
+
+package Summaries{
+    'le pongo el as para poder cambiar fácilmente al nombre original (Class a secas).
+    entity "ClassSummary" as ClassSummary
+    entity PackageSummary
+    entity ModuleSummary <<unused>>
+    remove ModuleSummary
+    
+    PackageSummary *-- ClassSummary
+}
+
+'esta se queda al principio pero luego se acaba yendo con la de PackageSummary.
+Architect --> ClassSummary : receives
+Architect --> PackageSummary : receives
+
+'esta se queda al principio pero luego se acaba yendo con la de UrbanPlanning.
+Architect --> Blueprint : designs
+Architect --> UrbanPlanning : designs
+@enduml

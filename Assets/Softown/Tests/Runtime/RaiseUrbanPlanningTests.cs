@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Infrastructure;
 using Softown.Tests.TestAPI;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 namespace Softown.Tests.Runtime
 {
@@ -57,17 +55,6 @@ namespace Softown.Tests.Runtime
                 .Select(b => b.transform.position.x)
                 .Should().OnlyHaveUniqueItems()
                 .And.NotBeEmpty();
-        }
-        
-        [UnityTest, Ignore("")]
-        public IEnumerator PlaceHolder()
-        {
-            var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
-            var urbanPlanning = new Architect().Design(new PackageSummary(typeof(string).Assembly));
-
-            sut.Raise(urbanPlanning);
-            Debug.Break();
-            yield return null;
         }
     }
 }

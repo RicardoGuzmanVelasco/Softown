@@ -1,8 +1,4 @@
-using System.Linq;
-using FluentAssertions;
-using NUnit.Framework;
 using Softown.Runtime.Infrastructure;
-using UnityEngine;
 
 namespace Softown.Tests.Runtime
 {
@@ -42,7 +38,7 @@ namespace Softown.Tests.Runtime
         [Test]
         public void Building_Cannot_HaveFoundations_WithScale0()
         {
-            sut.Foundation.X.Should().BePositive();
+            sut.Foundation.Size.x.Should().BePositive();
         }
 
         [Test]
@@ -50,7 +46,7 @@ namespace Softown.Tests.Runtime
         {
             sut.Raise(blueprint: new(1, 2));
 
-            sut.Foundation.X.Should().Be(2 + (int)Building.Ground.magnitude);
+            sut.Foundation.Size.x.Should().Be(2 + (int)Building.Ground.magnitude);
         }
 
         [Test]

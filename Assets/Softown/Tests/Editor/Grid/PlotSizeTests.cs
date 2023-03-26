@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using Softown.Runtime.Domain.Plotting;
 
@@ -10,34 +9,33 @@ namespace Softown.Tests.Editor
         [Test]
         public void X_WithOneFoundation()
         {
-            var sut = new Plot(new Dictionary<(int x, int y), Foundation>()
-            {
-                { (0, 0), Foundation.SquareOf(2) }
-            });
-            
-            sut.X.Should().Be(2);
+            var sut = new Plot(new SettledFoundation((0, 0), Foundation.SquareOf(2)));
+
+            sut.Size.x.Should().Be(2);
         }
-        
+
         [Test]
         public void X_WithTwoFoundations()
         {
-            var sut = new Plot(new Dictionary<(int x, int y), Foundation>()
-            {
-                { (0, 0), Foundation.SquareOf(2) }, { (2, 0), Foundation.SquareOf(2) } 
-            });
-            
-            sut.X.Should().Be(4);
+            var sut = new Plot
+            (
+                new((0, 0), Foundation.SquareOf(2)),
+                new((2, 0), Foundation.SquareOf(2))
+            );
+
+            sut.Size.x.Should().Be(4);
         }
-        
+
         [Test]
         public void X_WithTwoFoundations_WithSpaceBetweenThem()
         {
-            var sut = new Plot(new Dictionary<(int x, int y), Foundation>()
-            {
-                { (0, 0), Foundation.SquareOf(2) }, { (10, 0), Foundation.SquareOf(2) } 
-            });
-            
-            sut.X.Should().Be(12);
+            var sut = new Plot
+            (
+                new((0, 0), Foundation.SquareOf(2)),
+                new((10, 0), Foundation.SquareOf(2))
+            );
+
+            sut.Size.x.Should().Be(12);
         }
     }
 }

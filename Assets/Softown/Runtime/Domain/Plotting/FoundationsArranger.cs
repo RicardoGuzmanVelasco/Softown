@@ -27,22 +27,7 @@ namespace Softown.Runtime.Domain.Plotting
             if(foundations.Count == 2)
                 return firstTwo;
 
-            return Foundation.RectangleOf(firstTwo.X, firstTwo.Y + space + foundations[2].Y);
-        }
-
-        public Foundation LineUp(IReadOnlyList<Foundation> foundations)
-        {
-            Assert.IsTrue(foundations.Any());
-
-            if(foundations.Count == 1)
-                return foundations.First();
-
-            var (x, y) = (0, foundations.Max(f => f.Y));
-            foreach(var f in foundations)
-                x += f.X + space;
-            x -= space;
-
-            return Foundation.RectangleOf(x, y);
+            return Foundation.RectangleOf(firstTwo.Size.x, firstTwo.Size.y + space + foundations[2].Size.y);
         }
 
         public Plot LineUpTemp(IReadOnlyList<Foundation> foundations)
@@ -54,7 +39,7 @@ namespace Softown.Runtime.Domain.Plotting
             foreach(var foundation in foundations)
             {
                 result.Add(origin, foundation);
-                origin.x += foundation.X + space;
+                origin.x += foundation.Size.x + space;
             }
             
             Assert.IsTrue(result.Keys.All(k => k.Item2 == 0)); //a modelo.
@@ -65,9 +50,9 @@ namespace Softown.Runtime.Domain.Plotting
         {
             Assert.IsTrue(foundations.Count == 2);
 
-            var (x, y) = (0, foundations.Max(f => f.Y));
+            var (x, y) = (0, foundations.Max(f => f.Size.y));
             foreach(var f in foundations)
-                x += f.X + space;
+                x += f.Size.x + space;
             x -= space;
 
             return Foundation.RectangleOf(x, y);

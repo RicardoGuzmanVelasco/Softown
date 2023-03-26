@@ -22,7 +22,7 @@ namespace Softown.Runtime.Infrastructure
                 Ground + new Vector3(blueprint.FoundationsWidth, blueprint.Floors, blueprint.FoundationsWidth);
             transform.position += Vector3.up * (blueprint.Floors / 2f);
 
-            Assert.IsTrue(Foundation.X > 0);
+            Assert.IsTrue(Foundation.Size.x > 0);
             Assert.AreEqual(transform.localScale.x, transform.localScale.z);
             Assert.IsTrue(Floors > 0);
         }

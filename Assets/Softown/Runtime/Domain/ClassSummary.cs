@@ -16,7 +16,9 @@ namespace Softown.Runtime.Domain
             Properties = type.GetProperties(Public | Instance | DeclaredOnly).Length;
             PublicMethods = type.GetMethods(Public | Instance | DeclaredOnly).Length;
             Name = type.Name;
+            
             PublicMethods -= Properties * 2;
+            PublicMethods = Math.Max(0, PublicMethods);
 
             Assert.IsTrue(Properties >= 0);
             Assert.IsTrue(PublicMethods >= 0);

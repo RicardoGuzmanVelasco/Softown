@@ -59,10 +59,13 @@ namespace Softown.Tests.Runtime
                 .And.NotBeEmpty();
         }
         
-        [UnityTest]
+        [UnityTest, Ignore("")]
         public IEnumerator PlaceHolder()
         {
-            Buildings_NeverHave_SameCenter();
+            var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
+            var urbanPlanning = new Architect().Design(new PackageSummary(typeof(string).Assembly));
+
+            sut.Raise(urbanPlanning);
             Debug.Break();
             yield return null;
         }

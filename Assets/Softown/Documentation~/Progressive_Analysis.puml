@@ -29,7 +29,7 @@ package Summaries{
     entity ModuleSummary <<unused>>
     remove ModuleSummary
     
-    PackageSummary *-- ClassSummary
+    PackageSummary *-r- ClassSummary
 }
 
 'esta se queda al principio pero luego se acaba yendo con la de PackageSummary.
@@ -39,4 +39,12 @@ Architect --> PackageSummary : receives
 'esta se queda al principio pero luego se acaba yendo con la de UrbanPlanning.
 Architect --> Blueprint : designs
 Architect --> UrbanPlanning : designs
+
+package System.Reflection #lightgray{
+    entity Type
+    entity Assembly
+}
+
+ClassSummary ..> Type : creates\nfrom
+PackageSummary ..> Assembly : creates\nfrom
 @enduml

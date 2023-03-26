@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Infrastructure;
 using Softown.Tests.TestAPI;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Softown.Tests.Runtime
 {
@@ -36,11 +38,33 @@ namespace Softown.Tests.Runtime
             var urbanPlanning = new Architect().Design(new PackageSummary(typeof(TwoMethods).Assembly));
 
             sut.Raise(urbanPlanning);
-            
+
             Object.FindObjectsOfType<Building>()
                 .Select(b => b.transform.position.XZ())
                 .Should().OnlyHaveUniqueItems()
                 .And.NotBeEmpty();
+        }
+
+        [Test]
+        public void Space_BetweenBuildings_AreTheSame()
+        {
+            var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
+            var urbanPlanning = new Architect().Design(new PackageSummary(typeof(TwoMethods).Assembly));
+
+            sut.Raise(urbanPlanning);
+
+            Object.FindObjectsOfType<Building>()
+                .Select(b => b.transform.position.x)
+                .Should().OnlyHaveUniqueItems()
+                .And.NotBeEmpty();
+        }
+        
+        [UnityTest]
+        public IEnumerator PlaceHolder()
+        {
+            Buildings_NeverHave_SameCenter();
+            Debug.Break();
+            yield return null;
         }
     }
 }

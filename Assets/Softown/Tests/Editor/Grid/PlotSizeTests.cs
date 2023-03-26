@@ -25,6 +25,18 @@ namespace Softown.Tests.Editor
 
             sut.Size.x.Should().Be(4);
         }
+        
+        [Test]
+        public void Y_WithTwoFoundations_OfDifferentSizes()
+        {
+            var sut = new Plot
+            (
+                new((0, 0), Foundation.SquareOf(2)),
+                new((2, 0), Foundation.SquareOf(3))
+            );
+
+            sut.Size.y.Should().Be(3);
+        }
 
         [Test]
         public void X_WithTwoFoundations_WithSpaceBetweenThem()
@@ -36,6 +48,19 @@ namespace Softown.Tests.Editor
             );
 
             sut.Size.x.Should().Be(12);
+        }
+
+        [Test]
+        public void X_WithThreeFoundations_OfDifferentSizes_NorOrderedBySize()
+        {
+            var sut = new Plot
+            (
+                new((0, 0), Foundation.SquareOf(2)),
+                new((0, 2), Foundation.SquareOf(3)),
+                new((0, 5), Foundation.SquareOf(1))
+            );
+
+            sut.Size.x.Should().Be(3);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Softown.Tests.Editor
         {
             var sut = new FoundationsArranger();
 
-            var result = sut.LineUpTemp(new[] { SquareOf(2) });
+            var result = sut.LineUp(new[] { SquareOf(2) });
 
             result.Foundations.Should().ContainSingle().And.ContainValue(SquareOf(2));
         }
@@ -22,7 +22,7 @@ namespace Softown.Tests.Editor
         {
             var sut = new FoundationsArranger();
 
-            var result = sut.LineUpTemp(new[] { SquareOf(2), SquareOf(1) });
+            var result = sut.LineUp(new[] { SquareOf(2), SquareOf(1) });
 
             result.Foundations.Should()
                 .HaveCount(2)
@@ -35,7 +35,7 @@ namespace Softown.Tests.Editor
         {
             var sut = new FoundationsArranger(inbetween: 5);
 
-            var result = sut.LineUpTemp(new[] { SquareOf(2), SquareOf(1) });
+            var result = sut.LineUp(new[] { SquareOf(2), SquareOf(1) });
 
             result.Foundations.Should()
                 .HaveCount(2)
@@ -48,7 +48,7 @@ namespace Softown.Tests.Editor
         {
             var sut = new FoundationsArranger();
 
-            var result = sut.LineUpTemp(new[] { SquareOf(2), SquareOf(1), SquareOf(3) });
+            var result = sut.LineUp(new[] { SquareOf(2), SquareOf(1), SquareOf(3) });
 
             result.Foundations.Should()
                 .HaveCount(3)
@@ -62,7 +62,7 @@ namespace Softown.Tests.Editor
         {
             var sut = new FoundationsArranger(inbetween: 1);
 
-            var result = sut.LineUpTemp(new[] { SquareOf(2), SquareOf(1), SquareOf(3) });
+            var result = sut.LineUp(new[] { SquareOf(2), SquareOf(1), SquareOf(3) });
 
             result.Foundations.Should()
                 .HaveCount(3)

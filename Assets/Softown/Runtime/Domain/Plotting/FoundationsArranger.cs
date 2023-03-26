@@ -30,7 +30,9 @@ namespace Softown.Runtime.Domain.Plotting
             return Foundation.RectangleOf(firstTwo.Size.x, firstTwo.Size.y + space + foundations[2].Size.y);
         }
 
-        public Plot LineUpTemp(IReadOnlyList<Foundation> foundations)
+        public Plot LineUp(IEnumerable<Foundation> foundations) => LineUp(foundations.ToList());
+
+        public Plot LineUp(IReadOnlyList<Foundation> foundations)
         {
             Assert.IsTrue(foundations.Any());
             

@@ -5,7 +5,7 @@ namespace Softown.Runtime.Domain.Plotting
 {
     public readonly struct SettledFoundation
     {
-        public readonly (int x, int y) At;
+        public readonly (int x, int y) At; //en realidad esto debería ser el center.
         public readonly Foundation Foundation;
         
         public SettledFoundation((int x, int y) at, Foundation foundation)

@@ -11,7 +11,10 @@ namespace Softown.Runtime.Infrastructure
         public static readonly Vector3 Ground = Vector3.one;
 
         public int Floors => (int)transform.localScale.y;
-        public Foundation Foundation => Foundation.RectangleOf((int)transform.localScale.x, (int)transform.localScale.z);
+
+        public Foundation Foundation =>
+            Foundation.RectangleOf((int)transform.localScale.x, (int)transform.localScale.z);
+
         public float WhereIsTheGround => transform.position.y;
 
         public void Raise(Blueprint blueprint)
@@ -19,7 +22,7 @@ namespace Softown.Runtime.Infrastructure
             GameObject.CreatePrimitive(Cube).transform.SetParent(transform);
 
             transform.localScale =
-                Ground + new Vector3(blueprint.FoundationsWidth, blueprint.Floors, blueprint.FoundationsWidth);
+                new Vector3(blueprint.FoundationsWidth, blueprint.Floors + Ground.y, blueprint.FoundationsWidth);
             transform.position += Vector3.up * (blueprint.Floors / 2f);
 
             Assert.IsTrue(Foundation.Size.x > 0);

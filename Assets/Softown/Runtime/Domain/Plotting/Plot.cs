@@ -8,8 +8,9 @@ namespace Softown.Runtime.Domain.Plotting
         public IReadOnlyDictionary<(int x, int y), Foundation> Foundations { get; }
 
         public (int x, int y) Size => (X, Y);
-        int X => Foundations.Keys.Last().x + Foundations.Values.Last().Size.x;
-        int Y => Foundations.Values.First().Size.y;
+        public (int x, int y) Center => (X / 2, Y / 2);
+        int X => Foundations.Keys.Max(k => k.x) + Foundations.Values.Max(v => v.Size.x);
+        int Y => Foundations.Keys.Max(k => k.y) + Foundations.Values.Max(v => v.Size.y);
 
         public Plot(params SettledFoundation[] foundations) : this((IEnumerable<SettledFoundation>) foundations) { }
         

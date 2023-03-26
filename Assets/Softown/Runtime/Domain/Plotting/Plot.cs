@@ -1,60 +1,31 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine.Assertions;
 
 namespace Softown.Runtime.Domain.Plotting
 {
-    public class Plot
+    public readonly struct Plot
     {
-        readonly int space = 1;
+        public IReadOnlyDictionary<(int x, int y), Foundation> Foundations { get; }
 
-        public Plot() : this(0) { }
-
-        public Plot(int inbetween)
+        public Plot(IReadOnlyDictionary<(int x, int y), Foundation> foundations)
         {
-            Assert.IsTrue(inbetween >= 0);
-            this.space = inbetween;
+            Foundations = foundations;
         }
 
-        public Foundation SquareUp(IReadOnlyList<Foundation> foundations)
+        public static Plot Blank => new();
+
+        // X based on size of foundations
+        public int X
         {
-            Assert.IsTrue(foundations.Any());
+            get
+            {
+                var result = 0;
+                foreach(var foundation in Foundations)
+                {
+                    result += foundation.Value.X;
+                }
 
-            if(foundations.Count == 1)
-                return foundations.First();
-
-            var firstTwo = Compound2(foundations.Take(2).ToArray());
-            if(foundations.Count == 2)
-                return firstTwo;
-            
-            return new(firstTwo.X, firstTwo.Y + space + foundations[2].Y);
-        }
-        
-        public Foundation LineUp(IReadOnlyList<Foundation> foundations)
-        {
-            Assert.IsTrue(foundations.Any());
-
-            if(foundations.Count == 1)
-                return foundations.First();
-            
-            var (x, y) = (0, foundations.Max(f => f.Y));
-            foreach(var f in foundations)
-                x += f.X + space;
-            x -= space;
-            
-            return new(x, y);
-        }
-
-        Foundation Compound2(IReadOnlyCollection<Foundation> foundations)
-        {
-            Assert.IsTrue(foundations.Count == 2);
-            
-            var (x, y) = (0, foundations.Max(f => f.Y));
-            foreach(var f in foundations)
-                x += f.X + space;
-            x -= space;
-            
-            return new(x, y);
+                return result;
+            }
         }
     }
 }

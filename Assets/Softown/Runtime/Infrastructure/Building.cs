@@ -11,7 +11,7 @@ namespace Softown.Runtime.Infrastructure
         public static readonly Vector3 Ground = Vector3.one;
 
         public int Floors => (int)transform.localScale.y;
-        public Foundation Foundation => new((int)transform.localScale.x, (int)transform.localScale.z);
+        public Foundation Foundation => Foundation.RectangleOf((int)transform.localScale.x, (int)transform.localScale.z);
         public float WhereIsTheGround => transform.position.y;
 
         public void Raise(Blueprint blueprint)

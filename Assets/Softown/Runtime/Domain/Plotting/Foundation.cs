@@ -2,22 +2,31 @@
 
 namespace Softown.Runtime.Domain.Plotting
 {
-    public readonly struct Foundation : Rectangle
+    public readonly struct Foundation
     {
+        public (int x, int y) Size => (X, Y);
         public int X { get; }
         public int Y { get; }
-        
-        public Foundation(int x) : this(x, x) { }
-        
-        public Foundation(int x, int y)
+
+        Foundation(int x) : this(x, x) { }
+        public static Foundation SquareOf(int x)
+        {
+            return new(x);
+        }
+
+        Foundation(int x, int y)
         {
             X = x;
             Y = y;
         }
-        
+        public static Foundation RectangleOf(int x, int y)
+        {
+            return new(x, y);
+        }
+
         public bool SameSizeThan(Foundation other) => X + Y == other.X + other.Y;
         
-        public Foundation Rotate() => new(Y, X);
+        public Foundation Rotate() => RectangleOf(Y, X);
 
         public int Max() => Math.Max(X, Y);
 

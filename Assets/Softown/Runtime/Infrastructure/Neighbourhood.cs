@@ -15,7 +15,7 @@ namespace Softown.Runtime.Infrastructure
                 building.Raise(blueprint);
                 
                 building.transform.position += Vector3.right * lastX;
-                lastX += building.FoundationsWidth;
+                lastX += building.Foundation.X;
             }
         }
     }

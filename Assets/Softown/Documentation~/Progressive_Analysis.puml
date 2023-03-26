@@ -7,7 +7,7 @@ package Urbanism{
     'le pongo el as para poder cambiar fácilmente al nombre original (tb Building).
     entity "Blueprint" as Blueprint
     
-    Building ..> Blueprint : raises\nfrom
+    Building .r.> Blueprint : raises\nfrom
     
     entity Architect
     
@@ -16,7 +16,7 @@ package Urbanism{
     'le pongo el as para poder cambiar fácilmente al nombre original (tb Neighborhood).
     entity "UrbanPlanning" as UrbanPlanning
     
-    Neighborhood ..> UrbanPlanning : raises\nfrom
+    Neighborhood .r.> UrbanPlanning : raises\nfrom
     
     Neighborhood *-- Building
     UrbanPlanning *-- Blueprint

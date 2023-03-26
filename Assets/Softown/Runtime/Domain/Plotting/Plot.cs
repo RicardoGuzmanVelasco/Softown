@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Softown.Runtime.Domain.Plotting
 {
@@ -18,13 +19,7 @@ namespace Softown.Runtime.Domain.Plotting
         {
             get
             {
-                var result = 0;
-                foreach(var foundation in Foundations)
-                {
-                    result += foundation.Value.X;
-                }
-
-                return result;
+                return Foundations.Last().Key.x + Foundations.Last().Value.X;
             }
         }
     }

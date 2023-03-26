@@ -7,7 +7,6 @@ namespace Softown.Runtime.Infrastructure
 {
     public class Building : MonoBehaviour
     {
-        public const int GroundSize = 1;
         public static readonly Vector3 Ground = Vector3.one;
 
         public int Floors => (int)transform.localScale.y;

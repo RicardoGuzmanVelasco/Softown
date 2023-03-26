@@ -1,4 +1,6 @@
-﻿namespace Softown.Runtime.Domain.Plotting
+﻿using System;
+
+namespace Softown.Runtime.Domain.Plotting
 {
     public readonly struct Foundation
     {
@@ -14,6 +16,10 @@
         }
         
         public bool SameSizeThan(Foundation other) => X + Y == other.X + other.Y;
+        
+        public Foundation Rotate() => new(Y, X);
+
+        public int Max() => Math.Max(X, Y);
 
         public static implicit operator (int, int)(Foundation foundation)
         {

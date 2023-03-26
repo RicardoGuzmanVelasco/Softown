@@ -12,8 +12,7 @@ namespace Softown.Runtime.Infrastructure
 
         public int Floors => (int)transform.localScale.y;
 
-        public Foundation Foundation =>
-            Foundation.RectangleOf((int)transform.localScale.x, (int)transform.localScale.z);
+        public Foundation Foundation => transform.localScale.ToFoundation();
 
         public float WhereIsTheGround => transform.position.y;
 
@@ -26,7 +25,7 @@ namespace Softown.Runtime.Infrastructure
             transform.position += Vector3.up * (blueprint.Floors / 2f);
 
             Assert.IsTrue(Foundation.Size.x > 0);
-            Assert.AreEqual(transform.localScale.x, transform.localScale.z);
+            Assert.AreEqual(transform.localScale.x, transform.localScale.z, "Ahora mismo solo cimientos cuadrados");
             Assert.IsTrue(Floors > 0);
         }
     }

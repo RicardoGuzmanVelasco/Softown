@@ -23,7 +23,7 @@ namespace Softown.Runtime.Infrastructure
                 building.transform.SetParent(transform);
                 building.Raise(selected);
 
-                building.transform.position += new Vector3(f.Key.x, 0, f.Key.y);
+                building.transform.position += f.Key.To3DWithY(0);
             }
 
             SpawnGroundFor(plot);
@@ -35,8 +35,8 @@ namespace Softown.Runtime.Infrastructure
             ground.name = "Ground";
             ground.transform.SetParent(transform);
             ground.GetComponent<MeshRenderer>().material.color = Color.green;
-            ground.transform.position += new Vector3(plot.Center.x, -0.5f, plot.Center.y);
-            ground.transform.localScale = new Vector3(plot.Size.x, 0.1f, plot.Size.y);
+            ground.transform.position += plot.Center.To3DWithY(-0.5f);
+            ground.transform.localScale = plot.Center.To3DWithY(0.1f);
         }
     }
 }

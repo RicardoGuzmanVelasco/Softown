@@ -2,7 +2,7 @@
 
 namespace Softown.Runtime.Domain.Plotting
 {
-    public readonly struct Foundation
+    public readonly struct Foundation : Rectangle
     {
         public int X { get; }
         public int Y { get; }

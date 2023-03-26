@@ -30,7 +30,7 @@ namespace Softown.Runtime.Domain
     {
         public static IEnumerable<Type> ExcludeUnityMonoScripts(this IEnumerable<Type> types)
         {
-            return types.Where(t => t.Namespace != "UnityEngine.MonoBehaviour");
+            return types.Where(t => !t.Name.Contains("MonoScript"));
         }
         
         public static IEnumerable<Type> ExcludeNoSummarizableTypes(this IEnumerable<Type> types)

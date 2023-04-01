@@ -19,15 +19,15 @@ namespace Softown.Runtime.Domain.Plotting
             Assert.IsTrue(foundations.ToList().Any());
             
             (int x, int y) origin = (0, 0);
-            var result = new Dictionary<(int x, int y), Foundation>();
+            var result = new List<SettledFoundation>();
             foreach(var foundation in foundations)
             {
-                result.Add(origin, foundation);
+                result.Add(new(origin, foundation));
                 origin.x += foundation.Size.x + space;
             }
             
-            Assert.IsTrue(result.Keys.All(k => k.Item2 == 0)); //a modelo.
-            return new(result.Select(pair => new SettledFoundation(pair.Key, pair.Value)));
+            Assert.IsTrue(result.All(k => k.At.y == 0)); //a modelo.
+            return new(result);
         }
     }
 }

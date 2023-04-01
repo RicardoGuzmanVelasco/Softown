@@ -26,6 +26,11 @@ namespace Softown.Runtime.Domain.Plotting
 
         public static Plot Blank { get; } = new();
         
+        public bool SameSizeThan(Plot other) => Size == other.Size;
+        public bool SameSizeThan(SettledFoundation other) => Size == other.Size;
+        public bool SameSizeThan(Foundation other) => Size == other.Size;
+        
+        
         public override string ToString() => $"Plot of {SettledFoundations.Count()} foundations";
     }
 }

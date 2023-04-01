@@ -25,9 +25,8 @@ namespace Softown.Tests.Editor
         public void WithThreeFundations_MakesTwoRows()
         {
             new GreedySquareUp()
-                .Order(new []{SquareOf(1), SquareOf(1), SquareOf(1)})
-                .SameSizeThan(new LineUp().Order(new []{SquareOf(1), SquareOf(1), SquareOf(1)}))
-                .Should().BeFalse();
+                .Order(new[] { SquareOf(1), SquareOf(1), SquareOf(1) })
+                .Should().NotBeEquivalentTo(new LineUp().Order(new[] { SquareOf(1), SquareOf(1), SquareOf(1) }));
         }
     }
 }

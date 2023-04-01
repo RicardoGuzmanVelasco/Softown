@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Reflection;
 using NUnit.Framework;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Infrastructure;
@@ -9,26 +10,32 @@ namespace Softown.Tests.Runtime
 {
     public class VisualizeAssembliesTests
     {
-        [UnityTest, Ignore("Placeholder")]
+        [UnityTest]
         public IEnumerator CSharp_System_AsaWhole()
         {
-            var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
-            var urbanPlanning = new Architect().Design(new PackageSummary(typeof(string).Assembly));
-
-            sut.Raise(urbanPlanning);
-            Debug.Break();
-            yield return null;
+            yield return Skip_aClass_EachUnpause(new PackageSummary(typeof(string).Assembly));
         }
-        
-        [UnityTest, Ignore("Placeholder")]
+
+        [UnityTest]
         public IEnumerator UnityEngine()
         {
-            var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
-            var urbanPlanning = new Architect().Design(new PackageSummary(typeof(ArrayList).Assembly));
+            yield return Skip_aClass_EachUnpause(new (typeof(MonoBehaviour).Assembly));
+        }
 
-            sut.Raise(urbanPlanning);
-            Debug.Break();
-            yield return null;
+        static IEnumerator Skip_aClass_EachUnpause(PackageSummary assembly)
+        {
+            var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
+
+            var s = 0;
+            while(s <= assembly.Classes)
+            {
+                var urbanPlanning = new Architect().Design(assembly, s++);
+                sut.Raise(urbanPlanning);
+                Debug.Break();
+                yield return null;
+                Object.Destroy(sut.gameObject);
+                sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
+            }
         }
     }
 }

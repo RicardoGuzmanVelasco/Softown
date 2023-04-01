@@ -10,7 +10,7 @@ namespace Softown.Runtime.Infrastructure
         public void Raise(UrbanPlanning urbanPlanning)
         {
             var foundations = urbanPlanning.Select(b => Foundation.SquareOf(b.FoundationsWidth));
-            var plot = new Plot(new LineUp(inbetween: 1), foundations.ToArray());
+            var plot = new Plot(new GreedySquareUp(), foundations.ToArray());
             
             var blueprints = urbanPlanning.ToList();
 

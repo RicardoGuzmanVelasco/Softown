@@ -9,9 +9,9 @@ namespace Softown.Runtime.Infrastructure
     {
         public void Raise(UrbanPlanning urbanPlanning)
         {
-            var arrange = new FoundationsArranger(inbetween: 1);
-            var plot = arrange.LineUp(urbanPlanning.Select(b => Foundation.SquareOf(b.FoundationsWidth)));
-
+            var foundations = urbanPlanning.Select(b => Foundation.SquareOf(b.FoundationsWidth));
+            var plot = new Plot(new LineUp(inbetween: 1), foundations.ToArray());
+            
             var blueprints = urbanPlanning.ToList();
 
             foreach(var f in plot.SettledFoundations)

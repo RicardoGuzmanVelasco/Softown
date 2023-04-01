@@ -34,5 +34,7 @@ namespace Softown.Runtime.Domain.Plotting
             x = Size.x;
             y = Size.y;
         }
+        
+        public override string ToString() => $"({Size.x}, {Size.y})";
     }
 }

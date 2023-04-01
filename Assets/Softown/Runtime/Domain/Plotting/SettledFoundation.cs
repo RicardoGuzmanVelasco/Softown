@@ -17,5 +17,7 @@ namespace Softown.Runtime.Domain.Plotting
             At = at;
             Foundation = foundation;
         }
+        
+        public override string ToString() => $"At ({At.x}, {At.y}): {Foundation}";
     }
 }

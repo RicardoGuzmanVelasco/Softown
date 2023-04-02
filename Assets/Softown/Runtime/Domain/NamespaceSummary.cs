@@ -16,7 +16,7 @@ namespace Softown.Runtime.Domain
         public NamespaceSummary(string name, IEnumerable<Type> candidates)
         {
             Assert.IsTrue(name is null || name.Any());
-            
+
             Name = name;
 
             //case Name_Match_Exactly_theCandidate
@@ -27,6 +27,37 @@ namespace Softown.Runtime.Domain
                     Namespaces = new List<NamespaceSummary>();
                     return;
                 }
+
+            //case Name_IsRootOf_theCandidate
+            if(candidates.Count() == 1)
+                if(name.IsSubnamespaceOf(candidates.Single().Namespace))
+                {
+                    ClassSummaries = new List<ClassSummary> { new(candidates.First()) };
+                    Namespaces = new List<NamespaceSummary>();
+                    return;
+                }
+
+            //case Name_IsRootOf_theCandidate
+            if(candidates.Count() == 1)
+                if(candidates.Single().IsInSubnamespaceOf(name))
+                {
+                    ClassSummaries = new List<ClassSummary>();
+                    Namespaces = new List<NamespaceSummary>()
+                        { new(candidates.Single().TrunkNamespaceRoot(), candidates) };
+                    return;
+                }
+
+            //case OneSubnamespace_withaClass_ButAlso_Directly_aChildClass
+            if(candidates.Count() == 2)
+            {
+                Namespaces = new NamespaceSummary(name, candidates.Take(1)).Namespaces
+                     .Concat(new NamespaceSummary(name, candidates.Skip(1)).Namespaces)
+                     .ToList();
+                ClassSummaries = new NamespaceSummary(name, candidates.Take(1)).ClassSummaries
+                    .Concat(new NamespaceSummary(name, candidates.Skip(1)).ClassSummaries)
+                    .ToList();
+                return;
+            }
 
             //case Name_DesNotMatch_anyCandidate
             ClassSummaries = new List<ClassSummary>();
@@ -41,9 +72,16 @@ namespace Softown.Runtime.Domain
 
             return type.Namespace.StartsWith(name);
         }
-        
-        public IEnumerator<ClassSummary> GetEnumerator() => ClassSummaries.Concat(Namespaces.SelectMany(n => n.ClassSummaries)).GetEnumerator();
+
+        public IEnumerator<ClassSummary> GetEnumerator()
+        {
+            var classSummaries = ClassSummaries.Concat(Namespaces.SelectMany(n => n.ClassSummaries));
+            return classSummaries.GetEnumerator();
+        }
+
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public static string GlobalNamespace => null;
+
+        public override string ToString() => Name;
     }
 }

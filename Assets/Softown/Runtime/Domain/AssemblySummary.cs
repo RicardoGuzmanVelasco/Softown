@@ -20,18 +20,11 @@ namespace Softown.Runtime.Domain
                 .ExcludeUnityMonoScripts()
                 .ExcludeNoSummarizableTypes();
 
-            RootNamespaces = assembly.AllNamespaces()
-                .OnlyRoots()
+            var onlyRoots = assembly.AllNamespaces()
+                .OnlyRoots();
+            
+            RootNamespaces = onlyRoots
                 .Select(r => new NamespaceSummary(r, types)).ToList();
-
-            //
-            // RootNamespaces = new[]
-            // {
-            //     new NamespaceSummary(new List<ClassSummary>(assembly.GetTypes()
-            //         .ExcludeUnityMonoScripts()
-            //         .ExcludeNoSummarizableTypes()
-            //         .Select(t => new ClassSummary(t))))
-            // };
         }
 
         IEnumerator IEnumerable.GetEnumerator()

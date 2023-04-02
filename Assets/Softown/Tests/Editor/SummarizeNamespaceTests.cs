@@ -85,13 +85,14 @@ namespace Softown.Tests.Editor
                 .Should().Contain(new ClassSummary(typeof(A.B1.B11)));
         }
 
+        [Test]
         public void NewMethod()
         {
             new NamespaceSummary("A.B1", new[] { typeof(A.A1), typeof(A.B1.B11) }).Classes.Should().Be(1);
         }
 
         [Test]
-        public void NamespacesInRoot()
+        public void OneSubnamespace_withaClass_ButAlso_Directly_aChildClass()
         {
             new NamespaceSummary("A", new[] { typeof(A.A1), typeof(A.B1.B11) }).Namespaces.Should().HaveCount(1);
         }

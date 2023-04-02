@@ -9,7 +9,7 @@ namespace Softown.Tests.Editor
         [Test]
         public void Obtain_Namespace_FromClass_WithNoNamespace()
         {
-            typeof(A.B1.C.C1).Assembly.Namespaces().Should().Contain
+            typeof(A.B1.C.C1).Assembly.AllNamespaces().Should().Contain
             (
                 new[] { null, "A", "A.B1", "A.B1.C", "A.B2.C" }
             );
@@ -18,7 +18,7 @@ namespace Softown.Tests.Editor
         [Test]
         public void Obtain_OnlyRootNamespaces()
         {
-            typeof(A.B1.C.C1).Assembly.Namespaces().OnlyRoots().Should().Contain
+            typeof(A.B1.C.C1).Assembly.AllNamespaces().OnlyRoots().Should().Contain
             (
                 new[] { null, "A" }
             ).And.NotContain(new[]{"A.B1", "A.B1.C", "A.B2.C"});

@@ -1,15 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Softown.Runtime.Domain
 {
-    internal readonly struct NamespaceSummary : IEnumerable<ClassSummary>
+    public readonly struct NamespaceSummary : IEnumerable<ClassSummary>
     {
         public string Name { get; }
         IReadOnlyCollection<ClassSummary> ClassSummaries { get; }
         public int Classes => ClassSummaries.Count;
 
-        public NamespaceSummary(string name)
+        public NamespaceSummary(string name, IEnumerable<Type> types)
         {
             //Obtain namespaces of assembly
             Name = name;

@@ -6,7 +6,7 @@ namespace Softown.Runtime.Domain
 {
     public static class AssemblyExtensions
     {
-        public static ISet<string> Namespaces(this Assembly assembly)
+        public static ISet<string> AllNamespaces(this Assembly assembly)
         {
             return new HashSet<string>(assembly.GetTypes().Select(t => t.Namespace));
         }

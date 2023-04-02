@@ -6,10 +6,10 @@ namespace Softown.Runtime.Domain.Plotting
 {
     public readonly struct Plot
     {
-        public IEnumerable<SettledFoundation> SettledFoundations { get; }
+        public IEnumerable<Settled> SettledFoundations { get; }
         public (int x, int y) Size { get; }
         
-        public IReadOnlyDictionary<(int x, int y), Foundation> Foundations => SettledFoundations.ToDictionary(x => x.At, x => x.Foundation);
+        public IReadOnlyDictionary<(int x, int y), Block> Foundations => SettledFoundations.ToDictionary(x => x.At, x => x.Block);
         public (float x, float y) Center => (Size.x / 2f, Size.y / 2f);
 
         public Plot(Packing strategy, params Foundation[] foundations)
@@ -19,17 +19,17 @@ namespace Softown.Runtime.Domain.Plotting
             Size = plot.Size;
         }
         
-        public Plot(IEnumerable<SettledFoundation> settledFoundations)
+        public Plot(IEnumerable<Settled> settledFoundations)
         {
             Assert.IsTrue(settledFoundations.Any());
             SettledFoundations = settledFoundations;
-            Size = (SettledFoundations.Max(x => x.At.x + x.Foundation.Size.x), SettledFoundations.Max(x => x.At.y + x.Foundation.Size.y));
+            Size = (SettledFoundations.Max(x => x.At.x + x.Block.Size.x), SettledFoundations.Max(x => x.At.y + x.Block.Size.y));
         }
 
         public static Plot Blank { get; } = new();
         
         public bool SameSizeThan(Plot other) => Size == other.Size;
-        public bool SameSizeThan(SettledFoundation other) => Size == other.Size;
+        public bool SameSizeThan(Settled other) => Size == other.Size;
         public bool SameSizeThan(Foundation other) => Size == other.Size;
 
         public override bool Equals(object obj)
@@ -68,7 +68,7 @@ namespace Softown.Runtime.Domain.Plotting
             if(this.Equals(Blank))
                 return this;
             
-            return new(SettledFoundations.Select(x => new SettledFoundation((x.At.x, x.At.y + verticalOffset), x.Foundation)));
+            return new(SettledFoundations.Select(x => new Settled((x.At.x, x.At.y + verticalOffset), x.Block)));
         }
 
         public override string ToString()

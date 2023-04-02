@@ -19,7 +19,7 @@ namespace Softown.Runtime.Domain.Plotting
             Assert.IsTrue(foundations.ToList().Any());
             
             (int x, int y) origin = (0, 0);
-            var result = new List<SettledFoundation>();
+            var result = new List<Settled>();
             foreach(var foundation in foundations)
             {
                 result.Add(new(origin, foundation));

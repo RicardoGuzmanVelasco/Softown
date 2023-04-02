@@ -3,13 +3,6 @@ using UnityEngine.Assertions;
 
 namespace Softown.Runtime.Domain.Plotting
 {
-    public abstract record Block
-    {
-        public (int x, int y) Size { get; protected init; }
-
-        public bool SameSizeThan(Foundation other) => Size == other.Size;
-    }
-
     public record Foundation : Block
     {
         public static Foundation SquareOf(int x) => new(x);

@@ -16,7 +16,7 @@ namespace Softown.Runtime.Infrastructure
 
             foreach(var f in plot.SettledFoundations)
             {
-                var selected = blueprints.First(b => b.FoundationsWidth == f.Foundation.Size.x);
+                var selected = blueprints.First(b => b.FoundationsWidth == f.Block.Size.x);
                 blueprints.Remove(selected);
 
                 var building = new GameObject(selected.BuildingName, typeof(Building)).GetComponent<Building>();

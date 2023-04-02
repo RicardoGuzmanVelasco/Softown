@@ -9,7 +9,7 @@ namespace Softown.Runtime.Domain
     public readonly struct NamespaceSummary : IEnumerable<ClassSummary>
     {
         public string Name { get; }
-        IReadOnlyCollection<ClassSummary> ClassSummaries => Namespaces.SelectMany(n => n).ToList();
+        IReadOnlyCollection<ClassSummary> ClassSummaries { get; }
         public IReadOnlyCollection<NamespaceSummary> Namespaces { get; }
         public int Classes => ClassSummaries.Count;
 
@@ -18,6 +18,18 @@ namespace Softown.Runtime.Domain
             Assert.IsTrue(name is null || name.Any());
             
             Name = name;
+
+            //case Name_Match_Exactly_theCandidate
+            if(candidates.Count() == 1)
+                if(candidates.Single().Namespace == name)
+                {
+                    ClassSummaries = new List<ClassSummary> { new(candidates.First()) };
+                    Namespaces = new List<NamespaceSummary>();
+                    return;
+                }
+
+            //case Name_DesNotMatch_anyCandidate
+            ClassSummaries = new List<ClassSummary>();
             Namespaces = new List<NamespaceSummary>();
         }
 
@@ -30,7 +42,7 @@ namespace Softown.Runtime.Domain
             return type.Namespace.StartsWith(name);
         }
         
-        public IEnumerator<ClassSummary> GetEnumerator() => ClassSummaries.GetEnumerator();
+        public IEnumerator<ClassSummary> GetEnumerator() => ClassSummaries.Concat(Namespaces.SelectMany(n => n.ClassSummaries)).GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public static string GlobalNamespace => null;
     }

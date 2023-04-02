@@ -50,15 +50,15 @@ namespace Softown.Tests.Editor
         }
 
         [Test]
-        public void CannotStore_Type_WithOtherNamespace()
+        public void Name_DesNotMatch_anyCandidate()
         {
             new NamespaceSummary("NO", new[] { typeof(A.B1.C.C1) }).Should().BeEmpty();
         }
 
         [Test]
-        public void Store_Type_WithSameNamespace()
+        public void Name_Match_Exactly_theCandidate()
         {
-            new NamespaceSummary("A.B1", new[] { typeof(A.B1.C.C1) }).Should().HaveCount(1);
+            new NamespaceSummary("A.B1.C", new[] { typeof(A.B1.C.C1) }).Should().HaveCount(1);
         }
 
         [Test]

@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Framework;
 using Softown.Runtime.Domain;
 using static Softown.Runtime.Domain.NamespaceSummary;
@@ -36,17 +37,17 @@ namespace Softown.Tests.Editor
         [Test]
         public void SubnamespaceOf()
         {
-            "A".IsSubnamespaceOf("A").Should().BeFalse();
-            "A".IsSubnamespaceOf("B").Should().BeFalse();
-            "A".IsSubnamespaceOf("A.B").Should().BeFalse();
-            "A.B".IsSubnamespaceOf("A").Should().BeTrue();
-            "A.B".IsSubnamespaceOf("A.B").Should().BeFalse();
-            "A.B".IsSubnamespaceOf("A.B.C").Should().BeFalse();
-            "A.B.C".IsSubnamespaceOf("A.B").Should().BeTrue();
-            "A.B.C".IsSubnamespaceOf("A.B.C").Should().BeFalse();
-            "A.B.C".IsSubnamespaceOf("A.B.C.D").Should().BeFalse();
-            "A.B.C.D".IsSubnamespaceOf("A.B.C").Should().BeTrue();
-            "A.B.C.D".IsSubnamespaceOf("A.B.C.D").Should().BeFalse();
+            using var _ = new AssertionScope();
+            "A".IsSubnamespaceOf("A").Should().BeFalse("1");
+            "A".IsSubnamespaceOf("B").Should().BeFalse("2");
+            "A".IsSubnamespaceOf("A.B").Should().BeFalse("3");
+            "A.B".IsSubnamespaceOf("A").Should().BeTrue("4");
+            "A.B".IsSubnamespaceOf("A.B").Should().BeFalse("5");
+            "A.B".IsSubnamespaceOf("A.B.C").Should().BeFalse("6");
+            "A.B.C".IsSubnamespaceOf("A.B").Should().BeTrue("7");
+            "A.B.C".IsSubnamespaceOf("A.B.C.D").Should().BeFalse("8");
+            "A.B.C.D".IsSubnamespaceOf("A.B.C").Should().BeTrue("9");
+            "B1.C".IsSubnamespaceOf("A.B1.C").Should().BeTrue("10");
         }
 
         [Test]
@@ -60,6 +61,12 @@ namespace Softown.Tests.Editor
         {
             new NamespaceSummary("A.B1.C", new[] { typeof(A.B1.C.C1) }).Should().HaveCount(1);
         }
+        
+        [Test]
+        public void Name_Match_aSubNamespaceOf_theCandidate()
+        {
+            new NamespaceSummary("B1.C", new[] { typeof(A.B1.C.C1) }).Should().HaveCount(1);
+        }
 
         [Test]
         public void ClassInGlobal()
@@ -68,9 +75,18 @@ namespace Softown.Tests.Editor
         }
 
         [Test]
-        public void ClassInNamespace()
+        public void Name_IsRootOf_theCandidate()
         {
-            new NamespaceSummary("A", new[] { typeof(A.A1) }).Classes.Should().Be(1);
+            new NamespaceSummary("A", new[] { typeof(A.B1.B11) })
+                .Namespaces
+                .Should().HaveCount(1);
+
+            new NamespaceSummary("A", new[] { typeof(A.B1.B11) })
+                .Should().Contain(new ClassSummary(typeof(A.B1.B11)));
+        }
+
+        public void NewMethod()
+        {
             new NamespaceSummary("A.B1", new[] { typeof(A.A1), typeof(A.B1.B11) }).Classes.Should().Be(1);
         }
 

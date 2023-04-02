@@ -18,18 +18,26 @@ namespace Softown.Runtime.Domain
             var others = namespaces.Where(n => n is not null).Select(n => n.Split('.').First());
             return new HashSet<string>(global.Concat(others));
         }
-
+        
         public static string TrunkNamespaceRoot(this Type t)
         {
-            if(t.Namespace is null)
+            return t.Namespace.TrunkNamespaceRoot();
+        }
+        public static string TrunkNamespaceRoot(this string ns)
+        {
+            if(ns is null)
                 return NamespaceSummary.GlobalNamespace;
 
-            if(!t.Namespace.Contains('.'))
+            if(!ns.Contains('.'))
                 return string.Empty;
 
-            return t.Namespace[(1+t.Namespace.IndexOf('.'))..];
+            return ns[(1+ns.IndexOf('.'))..];
         }
-        
+
+        public static bool IsInSubnamespaceOf(this Type t, string root)
+        {
+            return t.Namespace.IsSubnamespaceOf(root);
+        }
         public static bool IsSubnamespaceOf(this string ns, string root)
         {
             if(ns is null)
@@ -37,7 +45,15 @@ namespace Softown.Runtime.Domain
             if(root is null)
                 return false;
 
-            return ns != root && ns.StartsWith(root);
+            if(root == string.Empty || ns == string.Empty)
+                return false;
+
+            if(ns == root)
+                return false;
+            
+            return ns.StartsWith(root) ||
+                   root.TrunkNamespaceRoot().Equals(ns) ||
+                   ns.IsSubnamespaceOf(root.TrunkNamespaceRoot());
         }
     }
 }

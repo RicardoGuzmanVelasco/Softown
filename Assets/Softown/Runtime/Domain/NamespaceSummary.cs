@@ -1,30 +1,37 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.Assertions;
 
 namespace Softown.Runtime.Domain
 {
     public readonly struct NamespaceSummary : IEnumerable<ClassSummary>
     {
         public string Name { get; }
-        IReadOnlyCollection<ClassSummary> ClassSummaries { get; }
+        IReadOnlyCollection<ClassSummary> ClassSummaries => Namespaces.SelectMany(n => n).ToList();
+        public IReadOnlyCollection<NamespaceSummary> Namespaces { get; }
         public int Classes => ClassSummaries.Count;
 
-        public NamespaceSummary(string name, IEnumerable<Type> types)
+        public NamespaceSummary(string name, IEnumerable<Type> candidates)
         {
-            //Obtain namespaces of assembly
+            Assert.IsTrue(name is null || name.Any());
+            
             Name = name;
-            ClassSummaries = new List<ClassSummary>();
+            Namespaces = new List<NamespaceSummary>();
         }
 
-        public NamespaceSummary(IEnumerable<ClassSummary> classes)
+        static bool IsEligible(string name, Type type)
         {
-            ClassSummaries = new List<ClassSummary>(classes);
-            Name = "Placeholder";
-        }
+            //global:: case.
+            if(type.Namespace is null)
+                return name is null;
 
-        public static object Empty => new();
+            return type.Namespace.StartsWith(name);
+        }
+        
         public IEnumerator<ClassSummary> GetEnumerator() => ClassSummaries.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public static string GlobalNamespace => null;
     }
 }

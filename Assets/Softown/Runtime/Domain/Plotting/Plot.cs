@@ -30,8 +30,6 @@ namespace Softown.Runtime.Domain.Plotting
 
         public static Plot Blank { get; } = new();
 
-        public bool SameSizeThan(Plot other) => Size == other.Size;
-
         public IEnumerator<Block> GetEnumerator()
         {
             return Blocks.Select(s => s.Block).GetEnumerator();

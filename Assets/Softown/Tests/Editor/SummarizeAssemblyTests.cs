@@ -11,11 +11,13 @@ namespace Softown.Tests.Editor
         {
             new AssemblySummary(typeof(SummarizeAssemblyTests).Assembly).Name.Should().StartWith("Softown");
         }
-        
+
         [Test]
         public void Obtain_PackageClasses_From_Assembly()
         {
             new AssemblySummary(typeof(SummarizeAssemblyTests).Assembly).Classes.Should().BePositive();
         }
+
+        
     }
 }

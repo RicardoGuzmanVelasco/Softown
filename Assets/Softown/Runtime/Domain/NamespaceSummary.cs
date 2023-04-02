@@ -6,8 +6,15 @@ namespace Softown.Runtime.Domain
     internal readonly struct NamespaceSummary : IEnumerable<ClassSummary>
     {
         public string Name { get; }
-        IReadOnlyCollection<ClassSummary> ClassSummaries { get; } 
+        IReadOnlyCollection<ClassSummary> ClassSummaries { get; }
         public int Classes => ClassSummaries.Count;
+
+        public NamespaceSummary(string name)
+        {
+            //Obtain namespaces of assembly
+            Name = name;
+            ClassSummaries = new List<ClassSummary>();
+        }
 
         public NamespaceSummary(IEnumerable<ClassSummary> classes)
         {

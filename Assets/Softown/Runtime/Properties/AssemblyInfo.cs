@@ -10,3 +10,8 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Softown.Editor")]
 
 [assembly: InternalsVisibleTo("Softown.Editor.Tests")]
+
+namespace System.Runtime.CompilerServices
+{
+    public sealed class IsExternalInit { }
+}

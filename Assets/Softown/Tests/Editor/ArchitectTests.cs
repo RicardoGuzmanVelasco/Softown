@@ -19,7 +19,7 @@ namespace Softown.Tests.Editor
         public void Design_UrbanPlan()
         {
             new Architect()
-                .Design(new PackageSummary(typeof(TwoMethods).Assembly))
+                .Design(new AssemblySummary(typeof(TwoMethods).Assembly))
                 .Buildings.Should().Be(5);
         }
     }

@@ -13,7 +13,7 @@ namespace Softown.Tests.Runtime
         [UnityTest]
         public IEnumerator CSharp_System_AsaWhole()
         {
-            yield return Skip_aClass_EachUnpause(new PackageSummary(typeof(string).Assembly));
+            yield return Skip_aClass_EachUnpause(new AssemblySummary(typeof(string).Assembly));
         }
 
         [UnityTest]
@@ -22,7 +22,7 @@ namespace Softown.Tests.Runtime
             yield return Skip_aClass_EachUnpause(new (typeof(MonoBehaviour).Assembly));
         }
 
-        static IEnumerator Skip_aClass_EachUnpause(PackageSummary assembly)
+        static IEnumerator Skip_aClass_EachUnpause(AssemblySummary assembly)
         {
             var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
 

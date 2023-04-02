@@ -12,11 +12,11 @@ namespace Softown.Runtime.Domain
             return new(classSummary.Name, classSummary.PublicMethods, classSummary.Properties);
         }
 
-        public UrbanPlanning Design(PackageSummary packageSummary, int skipLast = 0)
+        public UrbanPlanning Design(AssemblySummary assemblySummary, int skipLast = 0)
         {
-            Assert.IsFalse(packageSummary.Equals(PackageSummary.Empty));
+            Assert.IsFalse(assemblySummary.Equals(AssemblySummary.Empty));
 
-            return new(packageSummary.SkipLast(skipLast).Select(Design));
+            return new(assemblySummary.SkipLast(skipLast).Select(Design));
         }
     }
 }

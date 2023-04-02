@@ -4,18 +4,18 @@ using Softown.Runtime.Domain;
 
 namespace Softown.Tests.Editor
 {
-    public class SummarizePackageTests
+    public class SummarizeAssemblyTests
     {
         [Test]
         public void Obtain_PackageName_From_Assembly()
         {
-            new PackageSummary(typeof(SummarizePackageTests).Assembly).Name.Should().StartWith("Softown");
+            new AssemblySummary(typeof(SummarizeAssemblyTests).Assembly).Name.Should().StartWith("Softown");
         }
         
         [Test]
         public void Obtain_PackageClasses_From_Assembly()
         {
-            new PackageSummary(typeof(SummarizePackageTests).Assembly).Classes.Should().BePositive();
+            new AssemblySummary(typeof(SummarizeAssemblyTests).Assembly).Classes.Should().BePositive();
         }
     }
 }

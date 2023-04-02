@@ -14,7 +14,7 @@ namespace Softown.Runtime.Infrastructure
             
             var blueprints = urbanPlanning.ToList();
 
-            foreach(var f in plot.SettledFoundations)
+            foreach(var f in plot.Blocks)
             {
                 var selected = blueprints.First(b => b.FoundationsWidth == f.Block.Size.x);
                 blueprints.Remove(selected);

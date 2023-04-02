@@ -1,53 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Assertions;
 
 namespace Softown.Runtime.Domain.Plotting
 {
-    public readonly struct Plot
+    public record Plot : Block, IEnumerable<Block>
     {
-        public IEnumerable<Settled> SettledFoundations { get; }
-        public (int x, int y) Size { get; }
-        
-        public IReadOnlyDictionary<(int x, int y), Block> Foundations => SettledFoundations.ToDictionary(x => x.At, x => x.Block);
+        public IEnumerable<Settled> Blocks { get; }
+
+        public override (int x, int y) Size => (Blocks.Max(x => x.At.x + x.Block.Size.x),
+            Blocks.Max(x => x.At.y + x.Block.Size.y));
+
         public (float x, float y) Center => (Size.x / 2f, Size.y / 2f);
 
-        public Plot(Packing strategy, params Foundation[] foundations)
+        public Plot(Packing strategy, params Block[] blocks)
         {
-            var plot = strategy.Order(foundations);
-            SettledFoundations = plot.SettledFoundations;
-            Size = plot.Size;
+            var plot = strategy.Order(blocks);
+            Blocks = plot.Blocks;
         }
-        
-        public Plot(IEnumerable<Settled> settledFoundations)
+
+        public Plot(IEnumerable<Settled> blocks)
         {
-            Assert.IsTrue(settledFoundations.Any());
-            SettledFoundations = settledFoundations;
-            Size = (SettledFoundations.Max(x => x.At.x + x.Block.Size.x), SettledFoundations.Max(x => x.At.y + x.Block.Size.y));
+            Assert.IsTrue(blocks.Any());
+            Blocks = blocks;
         }
+
+        Plot() { }
 
         public static Plot Blank { get; } = new();
-        
-        public bool SameSizeThan(Plot other) => Size == other.Size;
-        public bool SameSizeThan(Settled other) => Size == other.Size;
-        public bool SameSizeThan(Foundation other) => Size == other.Size;
 
-        public override bool Equals(object obj)
+        public bool SameSizeThan(Plot other) => Size == other.Size;
+
+        public IEnumerator<Block> GetEnumerator()
         {
-            return obj is Plot plot && Equals(plot);
-        }
-        
-        public bool Equals(Plot other)
-        {
-            if(SettledFoundations is null)
-                return other.SettledFoundations is null;
-            if(other.SettledFoundations is null)
-                return SettledFoundations is null;
-            if(Size.Equals(other.Size) == false)
-                return false;
-            if(SettledFoundations.Count() != other.SettledFoundations.Count())
-                return false;
-            return SettledFoundations.SequenceEqual(other.SettledFoundations) && Size.Equals(other.Size);
+            return Blocks.Select(s => s.Block).GetEnumerator();
         }
 
         public static Plot operator +(Plot left, Plot right)
@@ -56,10 +43,10 @@ namespace Softown.Runtime.Domain.Plotting
                 return right;
             if(right.Equals(Blank))
                 return left;
-            
-            var leftSettledFoundations = left.SettledFoundations;
+
+            var leftSettledFoundations = left.Blocks;
             var verticalOffset = left.Size.y;
-            var rightSettledFoundations = right.TranslateInY(verticalOffset).SettledFoundations;
+            var rightSettledFoundations = right.TranslateInY(verticalOffset).Blocks;
             return new(leftSettledFoundations.Concat(rightSettledFoundations));
         }
 
@@ -67,13 +54,18 @@ namespace Softown.Runtime.Domain.Plotting
         {
             if(this.Equals(Blank))
                 return this;
-            
-            return new(SettledFoundations.Select(x => new Settled((x.At.x, x.At.y + verticalOffset), x.Block)));
+
+            return new(Blocks.Select(x => new Settled((x.At.x, x.At.y + verticalOffset), x.Block)));
         }
 
         public override string ToString()
         {
-            return $"Plot of size {Size} with:\n" + string.Join("\n", SettledFoundations.Select(x => x.ToString()));
+            return $"Plot of size {Size} with:\n" + string.Join("\n", Blocks.Select(x => x.ToString()));
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

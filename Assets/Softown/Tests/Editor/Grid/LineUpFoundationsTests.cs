@@ -14,9 +14,9 @@ namespace Softown.Tests.Editor
 
             var result = sut.Order(new[] { SquareOf(2) });
 
-            result.Foundations.Should().ContainSingle().And.ContainValue(SquareOf(2));
+            result.Should().ContainSingle().And.Contain(SquareOf(2));
         }
-        
+
         [Test]
         public void LineUp_TwoFundations()
         {
@@ -24,10 +24,10 @@ namespace Softown.Tests.Editor
 
             var result = sut.Order(new[] { SquareOf(2), SquareOf(1) });
 
-            result.Foundations.Should()
+            result.Blocks.Should()
                 .HaveCount(2)
-                .And.Contain((0, 0), SquareOf(2))
-                .And.Contain((2, 0), SquareOf(1));
+                .And.Contain(new Settled((0, 0), SquareOf(2)))
+                .And.Contain(new Settled((2, 0), SquareOf(1)));
         }
 
         [Test]
@@ -37,12 +37,12 @@ namespace Softown.Tests.Editor
 
             var result = sut.Order(new[] { SquareOf(2), SquareOf(1) });
 
-            result.Foundations.Should()
+            result.Blocks.Should()
                 .HaveCount(2)
-                .And.Contain((0, 0), SquareOf(2))
-                .And.Contain((7, 0), SquareOf(1));
+                .And.Contain(new Settled((0, 0), SquareOf(2)))
+                .And.Contain(new Settled((7, 0), SquareOf(1)));
         }
-        
+
         [Test]
         public void LineUp_ThreeFundations()
         {
@@ -50,13 +50,13 @@ namespace Softown.Tests.Editor
 
             var result = sut.Order(new[] { SquareOf(2), SquareOf(1), SquareOf(3) });
 
-            result.Foundations.Should()
+            result.Blocks.Should()
                 .HaveCount(3)
-                .And.Contain((0, 0), SquareOf(2))
-                .And.Contain((2, 0), SquareOf(1))
-                .And.Contain((3, 0), SquareOf(3));
+                .And.Contain(new Settled((0, 0), SquareOf(2)))
+                .And.Contain(new Settled((2, 0), SquareOf(1)))
+                .And.Contain(new Settled((3, 0), SquareOf(3)));
         }
-        
+
         [Test]
         public void LineUp_ThreeFundations_WithSpaceInbetween()
         {
@@ -64,11 +64,11 @@ namespace Softown.Tests.Editor
 
             var result = sut.Order(new[] { SquareOf(2), SquareOf(1), SquareOf(3) });
 
-            result.Foundations.Should()
+            result.Blocks.Should()
                 .HaveCount(3)
-                .And.Contain((0, 0), SquareOf(2))
-                .And.Contain((3, 0), SquareOf(1))
-                .And.Contain((5, 0), SquareOf(3));
+                .And.Contain(new Settled((0, 0), SquareOf(2)))
+                .And.Contain(new Settled((3, 0), SquareOf(1)))
+                .And.Contain(new Settled((5, 0), SquareOf(3)));
         }
     }
 }

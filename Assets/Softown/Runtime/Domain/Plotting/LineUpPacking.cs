@@ -14,13 +14,13 @@ namespace Softown.Runtime.Domain.Plotting
             this.space = inbetween;
         }
         
-        public override Plot Order(IEnumerable<Foundation> foundations)
+        public override Plot Order(IEnumerable<Block> blocks)
         {
-            Assert.IsTrue(foundations.ToList().Any());
+            Assert.IsTrue(blocks.ToList().Any());
             
             (int x, int y) origin = (0, 0);
             var result = new List<Settled>();
-            foreach(var foundation in foundations)
+            foreach(var foundation in blocks)
             {
                 result.Add(new(origin, foundation));
                 origin.x += foundation.Size.x + space;

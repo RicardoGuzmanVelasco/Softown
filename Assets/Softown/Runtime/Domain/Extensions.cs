@@ -55,6 +55,41 @@ namespace Softown.Runtime.Domain
                    root.TrunkNamespaceRoot().Equals(ns) ||
                    ns.IsSubnamespaceOf(root.TrunkNamespaceRoot());
         }
+        
+        public static bool IsInnerNamespaceOf(this string ns, string root)
+        {
+            if(root.StartsWith(ns) || ns.StartsWith(root))
+                return false;
+            
+            if(root.EndsWith(ns))
+                return false;
+
+            if(root.Contains("." + ns + "."))
+                return true;
+
+            return ns.IsSubnamespaceOf(root);
+        }
+
+        public static string TrunkUntilDeleteSubnamespace(this string ns, string subns)
+        {
+            if(ns is null)
+                return null;
+            if(subns is null)
+                return ns;
+
+            if(subns == string.Empty || ns == string.Empty)
+                return ns;
+
+            if(ns == subns)
+                return string.Empty;
+            
+            if(ns.StartsWith(subns))
+                return ns[(1+subns.Length)..];
+
+            return ns.IndexOf("." + subns + ".") is var i && i > 0
+                ? ns[(2+i+subns.Length)..]
+                : ns;
+        }
     }
 }
 

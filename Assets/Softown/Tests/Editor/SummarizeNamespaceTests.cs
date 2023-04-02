@@ -51,6 +51,30 @@ namespace Softown.Tests.Editor
         }
 
         [Test]
+        public void IsInnerNamespaceOf()
+        {
+            using var _ = new AssertionScope();
+            "A".IsInnerNamespaceOf("A").Should().BeFalse("1");
+            "A".IsInnerNamespaceOf("B").Should().BeFalse("2");
+            "A".IsInnerNamespaceOf("A.B").Should().BeFalse("3");
+            "A.B".IsInnerNamespaceOf("A").Should().BeFalse("4");
+            "B".IsInnerNamespaceOf("A.B.C").Should().BeTrue("5");
+            "B".IsInnerNamespaceOf("A.B").Should().BeFalse("6");
+        }
+
+        [Test]
+        public void TrunkUntilDeleteSubnamespace()
+        {
+            using var _ = new AssertionScope();
+            "A".TrunkUntilDeleteSubnamespace("A").Should().Be(string.Empty, "1");
+            "A.B.C".TrunkUntilDeleteSubnamespace("B").Should().Be("C", "2");
+            "A.B.C".TrunkUntilDeleteSubnamespace("A").Should().Be("A.B.C".TrunkNamespaceRoot(), "3");
+            "A.B.C".TrunkUntilDeleteSubnamespace("A.B").Should().Be("C", "4");
+            "A.B.C.D".TrunkUntilDeleteSubnamespace("C").Should().Be("D", "5");
+
+        }
+
+        [Test]
         public void Name_DesNotMatch_anyCandidate()
         {
             new NamespaceSummary("NO", new[] { typeof(A.B1.C.C1) }).Should().BeEmpty();
@@ -65,7 +89,17 @@ namespace Softown.Tests.Editor
         [Test]
         public void Name_Match_aSubNamespaceOf_theCandidate()
         {
+            using var _ = new AssertionScope();
             new NamespaceSummary("B1.C", new[] { typeof(A.B1.C.C1) }).Should().HaveCount(1);
+            new NamespaceSummary("B1.C", new[] { typeof(A.B1.C.C1) }).Classes.Should().Be(1);
+        }
+
+        [Test]
+        public void Name_IsInnerNamespace()
+        {
+            new NamespaceSummary("B1", new[] { typeof(A.B1.C.C1) }).Should().HaveCount(1);
+            new NamespaceSummary("B1", new[] { typeof(A.B1.C.C1) }).Classes.Should().Be(0);
+            new NamespaceSummary("B1", new[] { typeof(A.B1.C.C1) }).NamespacesChildrenOfThisNamespace.Should().HaveCount(1);
         }
 
         [Test]
@@ -78,7 +112,7 @@ namespace Softown.Tests.Editor
         public void Name_IsRootOf_theCandidate()
         {
             new NamespaceSummary("A", new[] { typeof(A.B1.B11) })
-                .Namespaces
+                .NamespacesChildrenOfThisNamespace
                 .Should().HaveCount(1);
 
             new NamespaceSummary("A", new[] { typeof(A.B1.B11) })
@@ -94,7 +128,7 @@ namespace Softown.Tests.Editor
         [Test]
         public void OneSubnamespace_withaClass_ButAlso_Directly_aChildClass()
         {
-            new NamespaceSummary("A", new[] { typeof(A.A1), typeof(A.B1.B11) }).Namespaces.Should().HaveCount(1);
+            new NamespaceSummary("A", new[] { typeof(A.A1), typeof(A.B1.B11) }).NamespacesChildrenOfThisNamespace.Should().HaveCount(1);
         }
     }
 }

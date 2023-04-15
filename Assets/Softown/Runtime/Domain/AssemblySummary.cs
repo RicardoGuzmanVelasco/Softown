@@ -23,8 +23,8 @@ namespace Softown.Runtime.Domain
                 .ExcludeUnityMonoScripts()
                 .ExcludeNoSummarizableTypes();
 
-            NamespacesChildrenOfGlobal = assembly.AllNamespaces()
-                .OnlyChildrenOfGlobal()
+            var onlyChildrenOfGlobal = assembly.AllNamespaces().OnlyChildrenOfGlobal();
+            NamespacesChildrenOfGlobal = onlyChildrenOfGlobal
                 .Select(r => new NamespaceSummary(r, types)).ToList();
             
             GlobalNamespace = new(NamespaceSummary.GlobalNamespace, types);

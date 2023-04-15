@@ -7,6 +7,8 @@ namespace Softown.Tests.Editor
 {
     public class SummarizeAssemblyTests
     {
+        static AssemblySummary Sut => new(typeof(A.B1.C.C1).Assembly);
+
         [Test]
         public void Obtain_PackageName_From_Assembly()
         {
@@ -16,19 +18,20 @@ namespace Softown.Tests.Editor
         [Test]
         public void Obtain_PackageClasses_From_Assembly()
         {
-            new AssemblySummary(typeof(A.B1.C.C1).Assembly).Classes.Should().BePositive();
+            Sut.Classes.Should().BePositive();
         }
 
         [Test]
         public void Store_RootNamespaces()
         {
-            new AssemblySummary(typeof(A.B1.C.C1).Assembly).RootNamespaces.Should().HaveCount(2);
+            Sut.RootNamespaces.Should().HaveCount(2);
         }
 
         [Test]
         public void AsemblySummary_OnlyContains_UniqueChilds()
         {
-            new AssemblySummary(typeof(A.B1.C.C1).Assembly).Should().OnlyHaveUniqueItems();
+            var sut = Sut;
+                sut.Should().OnlyHaveUniqueItems();
         }
     }
 }

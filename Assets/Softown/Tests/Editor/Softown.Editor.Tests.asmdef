@@ -6,7 +6,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "BoundfoxStudios.FluentAssertions",
-        "Softown.Tests.TestAPI"
+        "Softown.Tests.TestAPI",
+        "Softown.Tests.Testown"
     ],
     "includePlatforms": [
         "Editor"

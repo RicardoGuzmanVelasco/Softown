@@ -4,7 +4,7 @@ using Softown.Runtime.Domain;
 
 namespace Softown.Tests.Editor
 {
-    public class SummarizeNamespaceTests
+    public class SummarizeClassesIntoNamespaceTests
     {
         [Test]
         public void GlobalNamespace_Contains_ClassWithoutNamespace()
@@ -80,6 +80,13 @@ namespace Softown.Tests.Editor
                 .Should()
                 .Contain(new ClassSummary(typeof(A.B1.B11)))
                 .And.HaveCount(1);
+        }
+
+        [Test]
+        public void LeafNamespace_AllClassesAreLeafs()
+        {
+            var sut = new NamespaceSummary("A.B2.C", new[]{typeof(A.B2.C.C1), typeof(A.B2.C.C2)});
+            sut.OnlyLeafClasses.Should().BeEquivalentTo(sut.AllChildrenClasses);
         }
     }
 }

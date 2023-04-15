@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Assertions;
 
 namespace Softown.Runtime.Domain
 {
@@ -14,7 +15,8 @@ namespace Softown.Runtime.Domain
         //public IEnumerable<ClassSummary> AllChildrenClasses => OnlyLeafClasses.Concat(directChildrenNamespaces.SelectMany(c => c.OnlyLeafClasses));
         public IEnumerable<ClassSummary> OnlyLeafClasses => allClases.Where(c => c.Namespace == Name);
         
-        public IEnumerable<NamespaceSummary> AllChildrenNamespaces => directChildrenNamespaces;
+        public IEnumerable<NamespaceSummary> DirectChildrenNamespaces => directChildrenNamespaces;
+        public IEnumerable<NamespaceSummary> AllChildrenNamespaces => directChildrenNamespaces.Concat(directChildrenNamespaces.SelectMany(c => c.AllChildrenNamespaces)).Distinct();
 
         public string Name => qualified.ToString();
 
@@ -23,14 +25,18 @@ namespace Softown.Runtime.Domain
             qualified = new(namespaceName);
 
             allClases = FittingCandidates(qualified, candidateTypes).ToArray();
-            
-            var childrenNamespaces = allClases
+
+            directChildrenNamespaces = allClases
                 .Select(c => c.fullNamespace)
                 .Where(n => qualified.IsDirectParentOf(n))
                 .Distinct()
                 .Select(n => new NamespaceSummary(n.ToString(), candidateTypes))
                 .ToArray();
-            directChildrenNamespaces = childrenNamespaces;
+            
+            Assert.IsFalse(directChildrenNamespaces.Any(n => n.qualified.Equals(qualified)));
+            Assert.IsTrue(directChildrenNamespaces.All(n => qualified.IsDirectParentOf(n.qualified)));
+            Assert.IsTrue(AllChildrenNamespaces.All(n => qualified.IsAncestorOf(n.qualified)));
+            Assert.IsTrue(AllChildrenClasses.All(c => qualified.Contains(c.fullNamespace)));
         }
 
         public bool Equals(NamespaceSummary other) => other != null && Name == other.Name;

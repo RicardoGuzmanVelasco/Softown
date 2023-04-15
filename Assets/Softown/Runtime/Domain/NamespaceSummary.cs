@@ -6,9 +6,10 @@ namespace Softown.Runtime.Domain
 {
     public sealed record NamespaceSummary 
     {
-        readonly ClassSummary[] classes;
+        readonly ClassSummary[] allClases;
         
-        public IEnumerable<ClassSummary> AllChildrenClasses => classes;
+        public IEnumerable<ClassSummary> AllChildrenClasses => allClases;
+        public IEnumerable<ClassSummary> OnlyLeafClasses => allClases.Where(c => c.Namespace == Name);
 
         public string Name { get; }
 
@@ -22,15 +23,13 @@ namespace Softown.Runtime.Domain
             else
                 chosenCandidates = candidateTypes.Where(c => c.Namespace == thisNamespaceName);
             
-            classes = chosenCandidates.Select(c => new ClassSummary(c)).ToArray();
+            allClases = chosenCandidates.Select(c => new ClassSummary(c)).ToArray();
         }
 
         public const string GlobalNamespace = null;
 
-        public bool Equals(NamespaceSummary other) => Name == other.Name;
-
-        public override bool Equals(object obj) => obj is NamespaceSummary other && Equals(other);
-        public override int GetHashCode() => (Name != null ? Name.GetHashCode() : 0);
+        public bool Equals(NamespaceSummary other) => other != null && Name == other.Name;
+        public override int GetHashCode() => Name != null ? Name.GetHashCode() : 0;
         
         public override string ToString() => Name;
     }

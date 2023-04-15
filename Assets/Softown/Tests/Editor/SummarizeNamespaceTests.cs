@@ -35,7 +35,7 @@ namespace Softown.Tests.Editor
         }
         
         [Test]
-        public void Namespace_Contains_LeafClassInItsNamespace()
+        public void Namespace_Contains_ClassesIncludedInItsNamespace()
         {
             new NamespaceSummary("A", new[] { typeof(A.A1) })
                 .AllChildrenClasses
@@ -50,6 +50,26 @@ namespace Softown.Tests.Editor
             new NamespaceSummary("A.B2", new[] { typeof(A.B1.B11) })
                 .AllChildrenClasses
                 .Should().BeEmpty();
+        }
+
+        [Test]
+        public void GlobalNamespace_Leafs_AreClassesWithoutNamespace()
+        {
+            new NamespaceSummary(NamespaceSummary.GlobalNamespace, new[] { typeof(NoNamespace), typeof(A.A1) })
+                .OnlyLeafClasses
+                .Should()
+                .Contain(new ClassSummary(typeof(NoNamespace)))
+                .And.HaveCount(1);
+        }
+        
+        [Test]
+        public void Namespace_Leafs_AreClassesExactlyInThisNamespace()
+        {
+            new NamespaceSummary("A", new[] { typeof(A.A1), typeof(A.B1.B11) })
+                .OnlyLeafClasses
+                .Should()
+                .Contain(new ClassSummary(typeof(A.A1)))
+                .And.HaveCount(1);
         }
     }
 }

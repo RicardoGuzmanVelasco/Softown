@@ -9,18 +9,19 @@ using UnityEngine.TestTools;
 
 namespace Softown.Tests.Runtime
 {
+    [Ignore("This is not a test, it is a tool to visualize the assemblies")]
     public class VisualizeAssembliesTests
     {
         [UnityTest]
         public IEnumerator CSharp_System_AsaWhole()
         {
-            yield return Skip_aClass_EachUnpause(new AssemblySummary(typeof(string).Assembly));
+            yield return Skip_aClass_EachUnpause(new(typeof(string).Assembly));
         }
 
         [UnityTest]
         public IEnumerator UnityEngine()
         {
-            yield return Skip_aClass_EachUnpause(new (typeof(MonoBehaviour).Assembly));
+            yield return Skip_aClass_EachUnpause(new(typeof(MonoBehaviour).Assembly));
         }
 
         static IEnumerator Skip_aClass_EachUnpause(AssemblySummary assembly)

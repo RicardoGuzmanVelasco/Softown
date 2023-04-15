@@ -16,7 +16,7 @@ namespace Softown.Runtime.Domain
         {
             Assert.IsFalse(assemblySummary.Equals(AssemblySummary.Empty));
 
-            return new(assemblySummary.SkipLast(skipLast).Select(Design));
+            return new(assemblySummary.AllContainedClasses.SkipLast(skipLast).Select(Design));
         }
     }
 }

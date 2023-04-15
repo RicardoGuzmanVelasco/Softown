@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Softown.Runtime.Domain
 {
-    public readonly struct NamespaceSummary : IEnumerable<ClassSummary>
+    public readonly struct NamespaceSummary 
     {
-        readonly IEnumerable<ClassSummary> classes;
+        readonly ClassSummary[] classes;
         
+        public IEnumerable<ClassSummary> AllChildrenClasses => classes;
+
         public string Name { get; }
 
         public NamespaceSummary(string thisNamespaceName, IEnumerable<Type> candidateTypes)
@@ -21,18 +22,13 @@ namespace Softown.Runtime.Domain
             else
                 chosenCandidates = candidateTypes.Where(c => c.Namespace == thisNamespaceName);
             
-            classes = chosenCandidates.Select(c => new ClassSummary(c));
+            classes = chosenCandidates.Select(c => new ClassSummary(c)).ToArray();
         }
 
         public const string GlobalNamespace = null;
-        public IEnumerator<ClassSummary> GetEnumerator()
-        {
-            return classes.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public bool Equals(NamespaceSummary other) => Name == other.Name;
+
         public override bool Equals(object obj) => obj is NamespaceSummary other && Equals(other);
         public override int GetHashCode() => (Name != null ? Name.GetHashCode() : 0);
         

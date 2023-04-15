@@ -28,7 +28,7 @@ namespace Softown.Tests.Runtime
             var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
 
             var s = 0;
-            while(s <= assembly.Count())
+            while(s <= assembly.AllContainedClasses.Count())
             {
                 var urbanPlanning = new Architect().Design(assembly, s++);
                 sut.Raise(urbanPlanning);

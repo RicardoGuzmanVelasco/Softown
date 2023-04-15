@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reflection;
 
 namespace Softown.Runtime.Domain
 {
-    public readonly struct AssemblySummary : IEnumerable<ClassSummary>
+    public readonly struct AssemblySummary
     {
+        readonly NamespaceSummary globalNamespace;
         public string Name { get; }
-        public NamespaceSummary GlobalNamespace { get; }
-
-        public static AssemblySummary Empty => new();
+        
+        public IEnumerable<ClassSummary> AllContainedClasses => globalNamespace.AllChildrenClasses;
 
         public AssemblySummary(Assembly assembly)
         {
@@ -19,17 +18,9 @@ namespace Softown.Runtime.Domain
                 .ExcludeUnityMonoScripts()
                 .ExcludeNoSummarizableTypes();
             
-            GlobalNamespace = new(NamespaceSummary.GlobalNamespace, types);
+            globalNamespace = new(NamespaceSummary.GlobalNamespace, types);
         }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public IEnumerator<ClassSummary> GetEnumerator()
-        {
-            return GlobalNamespace.GetEnumerator();
-        }
+        
+        public static AssemblySummary Empty => new();
     }
 }

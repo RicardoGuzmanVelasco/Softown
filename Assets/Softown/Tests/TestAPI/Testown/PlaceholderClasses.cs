@@ -6,6 +6,7 @@
 namespace A.B2.C
 {
     public class C1 { }
+    public class C2 { }
 }
 
 namespace A.B1

@@ -8,7 +8,6 @@ namespace Softown.Runtime.Domain
     public readonly struct AssemblySummary : IEnumerable<ClassSummary>
     {
         public string Name { get; }
-        [Description("Esto es temporal, luego irá todo colgando de GlobalNamespace")]
         public NamespaceSummary GlobalNamespace { get; }
 
         public static AssemblySummary Empty => new();

@@ -1,7 +1,7 @@
-﻿using Softown.Runtime.Domain;
+﻿using System.Linq;
+using Softown.Runtime.Domain;
 using Softown.Runtime.Domain.Plotting;
 using UnityEngine;
-using System.Linq;
 
 namespace Softown.Runtime.Infrastructure
 {
@@ -9,6 +9,8 @@ namespace Softown.Runtime.Infrastructure
     {
         public void Raise(UrbanPlanning urbanPlanning)
         {
+            name = urbanPlanning.Name;
+            
             var foundations = urbanPlanning.Select(b => Foundation.SquareOf(b.FoundationsWidth));
             var plot = new Plot(new GreedySquareUp(), foundations.ToArray());
             

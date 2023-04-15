@@ -31,6 +31,6 @@ namespace Softown.Runtime.Domain
 
         public static ClassSummary Empty => new();
 
-        public override string ToString() => $"{Name} ({PublicMethods}m,{Properties}p)";
+        public override string ToString() => $"{Name} @ {Namespace}";
     }
 }

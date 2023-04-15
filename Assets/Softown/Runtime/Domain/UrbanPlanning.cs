@@ -10,12 +10,15 @@ namespace Softown.Runtime.Domain
     public readonly struct UrbanPlanning : IEnumerable<Blueprint>
     {
         readonly IReadOnlyCollection<Blueprint> blueprints;
+        public string Name { get; }
 
-        public UrbanPlanning([NotNull] IEnumerable<Blueprint> blueprints)
+        public UrbanPlanning(string name, [NotNull] IEnumerable<Blueprint> blueprints)
         {
+            Assert.IsNotEmpty(name);
             Assert.IsNotEmpty(blueprints);
             Assert.IsFalse(blueprints.Any(b => b.Equals(Blank)));
             
+            Name = name;
             this.blueprints = new List<Blueprint>(blueprints);
             Assert.IsTrue(Buildings > 0);
         }

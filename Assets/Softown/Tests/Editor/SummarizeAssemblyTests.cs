@@ -24,7 +24,7 @@ namespace Softown.Tests.Editor
         [Test]
         public void Store_RootNamespaces()
         {
-            Sut.RootNamespaces.Should().HaveCount(2);
+            Sut.NamespacesChildrenOfGlobal.Should().HaveCount(1);
         }
 
         [Test]

@@ -13,11 +13,11 @@ namespace Softown.Runtime.Domain
             return new HashSet<string>(assembly.GetTypes().Select(t => t.Namespace));
         }
 
-        public static ISet<string> OnlyRoots(this IEnumerable<string> namespaces)
+        public static ISet<string> OnlyChildrenOfGlobal(this IEnumerable<string> namespaces)
         {
             var global = namespaces.Where(n => n is null);
             var others = namespaces.Where(n => n is not null).Select(n => n.Split('.').First());
-            return new HashSet<string>(global.Concat(others));
+            return new HashSet<string>(others.Except(global));
         }
 
         public static string TrunkNamespaceRoot(this Type t)

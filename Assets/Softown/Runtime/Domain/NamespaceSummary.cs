@@ -12,14 +12,14 @@ namespace Softown.Runtime.Domain
         public IReadOnlyCollection<ClassSummary> ClassLeafsChildrenOfThisNamespace { get; }
         public IReadOnlyCollection<NamespaceSummary> NamespacesChildrenOfThisNamespace { get; }
 
-        enum CtorCase
+        internal enum CtorCase
         {
             None,
             Name_Match_Exactly_theCandidate,
             IgnoresCandidates_ThatAreIn_aRoot,
-            Name_IsRootOf_theCandidate,
-            IsInSubnamespace,
-            Name_IsInnerNamespace,
+            Name_IsSubnamespace_OfCandidateNamespace,
+            CandidateNamespace_IsSubnamespaceOf_Name,
+            Name_IsInnerNamespace_OfCandidadteNamespace,
             Name_DesNotMatch_anyCandidate
         }
 
@@ -28,8 +28,9 @@ namespace Softown.Runtime.Domain
             Name = name;
 
             var candidates = new[] { candidate };
+            var thisCase = ThisCase(name, candidates); 
 
-            switch(ThisCase(name, candidates))
+            switch(thisCase)
             {
                 case CtorCase.Name_Match_Exactly_theCandidate:
                     ClassLeafsChildrenOfThisNamespace = new List<ClassSummary> { new(candidates.First()) };
@@ -39,16 +40,16 @@ namespace Softown.Runtime.Domain
                     ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
                     NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
                     break;
-                case CtorCase.Name_IsRootOf_theCandidate:
+                case CtorCase.Name_IsSubnamespace_OfCandidateNamespace:
                     ClassLeafsChildrenOfThisNamespace = new List<ClassSummary> { new(candidates.First()) };
                     NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
                     break;
-                case CtorCase.IsInSubnamespace:
+                case CtorCase.CandidateNamespace_IsSubnamespaceOf_Name:
                     ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
                     NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>()
                         { new(candidates.Single().TrunkNamespaceRoot(), candidates) };
                     break;
-                case CtorCase.Name_IsInnerNamespace:
+                case CtorCase.Name_IsInnerNamespace_OfCandidadteNamespace:
                     ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
                     NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>
                         { new(candidates.First().Namespace, candidates.First()) };
@@ -63,7 +64,7 @@ namespace Softown.Runtime.Domain
             }
         }
 
-        static CtorCase ThisCase(string name, Type[] candidates)
+        internal static CtorCase ThisCase(string name, Type[] candidates)
         {
             CtorCase thisCase;
             if(candidates.Single().Namespace == name)
@@ -71,11 +72,11 @@ namespace Softown.Runtime.Domain
             else if(candidates.Single().Namespace.IsRootOf(name))
                 thisCase = CtorCase.IgnoresCandidates_ThatAreIn_aRoot;
             else if(name.IsSubnamespaceOf(candidates.Single().Namespace))
-                thisCase = CtorCase.Name_IsRootOf_theCandidate;
+                thisCase = CtorCase.Name_IsSubnamespace_OfCandidateNamespace;
             else if(candidates.Single().IsInSubnamespaceOf(name))
-                thisCase = CtorCase.IsInSubnamespace;
+                thisCase = CtorCase.CandidateNamespace_IsSubnamespaceOf_Name;
             else if(name.IsInnerNamespaceOf(candidates.Single().Namespace))
-                thisCase = CtorCase.Name_IsInnerNamespace;
+                thisCase = CtorCase.Name_IsInnerNamespace_OfCandidadteNamespace;
             else
                 thisCase = CtorCase.Name_DesNotMatch_anyCandidate;
             return thisCase;

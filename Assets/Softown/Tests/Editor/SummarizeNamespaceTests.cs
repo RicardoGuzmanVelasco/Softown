@@ -3,6 +3,7 @@ using FluentAssertions.Execution;
 using NUnit.Framework;
 using Softown.Runtime.Domain;
 using static Softown.Runtime.Domain.NamespaceSummary;
+using static Softown.Runtime.Domain.NamespaceSummary.CtorCase;
 
 namespace Softown.Tests.Editor
 {
@@ -20,11 +21,11 @@ namespace Softown.Tests.Editor
         }
 
         [Test]
-        public void Obtain_OnlyRootNamespaces()
+        public void Obtain_OnlyChildrenOfGlobalNamespaces()
         {
-            typeof(A.B1.C.C1).Assembly.AllNamespaces().OnlyRoots().Should().Contain
+            typeof(A.B1.C.C1).Assembly.AllNamespaces().OnlyChildrenOfGlobal().Should().Contain
             (
-                new[] { null, "A" }
+                new[] { "A" }
             ).And.NotContain(new[] { "A.B1", "A.B1.C", "A.B2.C" });
         }
 
@@ -156,6 +157,12 @@ namespace Softown.Tests.Editor
             sut.Should().HaveCount(4);
             sut.ClassLeafsChildrenOfThisNamespace.Should().HaveCount(1);
             sut.NamespacesChildrenOfThisNamespace.Should().HaveCount(3);
+        }
+
+        [Test]
+        public void CasesTests()
+        {
+            ThisCase("A", new[] { typeof(NoNamespace) }).Should().Be(Name_IsInnerNamespace_OfCandidadteNamespace);
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
@@ -8,9 +9,11 @@ namespace Softown.Runtime.Domain
     public readonly struct AssemblySummary : IEnumerable<ClassSummary>
     {
         public string Name { get; }
-        public IReadOnlyCollection<NamespaceSummary> RootNamespaces { get; }
+        [Description("Esto es temporal, luego irá todo colgando de GlobalNamespace")]
+        public NamespaceSummary GlobalNamespace { get; }
+        public IReadOnlyCollection<NamespaceSummary> NamespacesChildrenOfGlobal { get; }
 
-        public int Classes => RootNamespaces.Sum(n => n.Count());
+        public int Classes => NamespacesChildrenOfGlobal.Sum(n => n.Count());
         public static AssemblySummary Empty => new();
 
         public AssemblySummary(Assembly assembly)
@@ -20,11 +23,11 @@ namespace Softown.Runtime.Domain
                 .ExcludeUnityMonoScripts()
                 .ExcludeNoSummarizableTypes();
 
-            var onlyRoots = assembly.AllNamespaces()
-                .OnlyRoots();
-            
-            RootNamespaces = onlyRoots
+            NamespacesChildrenOfGlobal = assembly.AllNamespaces()
+                .OnlyChildrenOfGlobal()
                 .Select(r => new NamespaceSummary(r, types)).ToList();
+            
+            GlobalNamespace = new(NamespaceSummary.GlobalNamespace, types);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -34,7 +37,7 @@ namespace Softown.Runtime.Domain
 
         public IEnumerator<ClassSummary> GetEnumerator()
         {
-            return RootNamespaces.SelectMany(n => n).GetEnumerator();
+            return GlobalNamespace.Concat(NamespacesChildrenOfGlobal.SelectMany(n => n)).GetEnumerator();
         }
     }
 }

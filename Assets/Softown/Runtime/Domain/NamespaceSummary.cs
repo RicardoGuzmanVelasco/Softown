@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Softown.Runtime.Domain
 {
-    public readonly struct NamespaceSummary 
+    public sealed record NamespaceSummary 
     {
         readonly ClassSummary[] classes;
         

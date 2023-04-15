@@ -7,7 +7,7 @@ namespace Softown.Runtime.Domain
 {
     public readonly struct ClassSummary
     {
-        readonly Namespace fullNamespace;
+        internal readonly Namespace fullNamespace;
         public int PublicMethods { get; }
         public int Properties { get; }
         public string Name { get; }

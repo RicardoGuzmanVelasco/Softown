@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using static Softown.Runtime.Domain.NamespaceSummary;
 
 namespace Softown.Runtime.Domain
 {
@@ -28,7 +27,7 @@ namespace Softown.Runtime.Domain
         public static string TrunkNamespaceRoot(this string ns)
         {
             if(ns is null)
-                return GlobalNamespace;
+                return Namespace.Global;
 
             if(!ns.Contains('.'))
                 return string.Empty;
@@ -38,8 +37,8 @@ namespace Softown.Runtime.Domain
 
         public static bool IsRootOf(this string candidateRoot, string subns)
         {
-            return candidateRoot is not GlobalNamespace &&
-                   subns is not GlobalNamespace &&
+            return candidateRoot is not Namespace.Global &&
+                   subns is not Namespace.Global &&
                    subns != candidateRoot && 
                    subns.StartsWith(candidateRoot);
         }
@@ -69,8 +68,8 @@ namespace Softown.Runtime.Domain
 
         public static bool IsInnerNamespaceOf(this string ns, string root)
         {
-            if(root is GlobalNamespace) return ns is not GlobalNamespace;
-            if(ns is GlobalNamespace) return false;
+            if(root is Namespace.Global) return ns is not Namespace.Global;
+            if(ns is Namespace.Global) return false;
             
             if(root.StartsWith(ns) || ns.StartsWith(root))
                 return false;

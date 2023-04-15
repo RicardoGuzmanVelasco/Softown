@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 
 namespace Softown.Runtime.Domain
@@ -18,7 +17,7 @@ namespace Softown.Runtime.Domain
                 .ExcludeUnityMonoScripts()
                 .ExcludeNoSummarizableTypes();
             
-            globalNamespace = new(NamespaceSummary.GlobalNamespace, types);
+            globalNamespace = new(Namespace.Global, types);
         }
         
         public static AssemblySummary Empty => new();

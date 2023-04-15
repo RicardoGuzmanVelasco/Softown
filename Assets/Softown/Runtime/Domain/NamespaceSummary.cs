@@ -19,21 +19,29 @@ namespace Softown.Runtime.Domain
         {
             qualified = new(namespaceName);
 
-            IEnumerable<Type> chosenCandidates;
-            if(namespaceName == GlobalNamespace)
-                chosenCandidates = candidateTypes;
-            else
-                chosenCandidates = candidateTypes.Where(c => c.Namespace == namespaceName);
+            allClases = FittingCandidates(qualified, candidateTypes).ToArray();
             
-            allClases = chosenCandidates.Select(c => new ClassSummary(c)).ToArray();
-            
+            var childrenNamespaces = allClases
+                .Select(c => c.fullNamespace)
+                .Where(n => qualified.IsDirectParentOf(n))
+                .Distinct()
+                .Select(n => new NamespaceSummary(n.ToString(), candidateTypes))
+                .ToArray();
+            directChildrenNamespaces = childrenNamespaces;
         }
-
-        public const string GlobalNamespace = null;
 
         public bool Equals(NamespaceSummary other) => other != null && Name == other.Name;
         public override int GetHashCode() => Name != null ? Name.GetHashCode() : 0;
         
         public override string ToString() => Name;
+        
+        static IEnumerable<ClassSummary> FittingCandidates(Namespace parent, IEnumerable<Type> candidateTypes)
+        {
+            var allCandidates = candidateTypes.Select(c => new ClassSummary(c));
+            
+            return parent.IsGlobal
+                ? allCandidates
+                : allCandidates.Where(c => parent.Contains(c.fullNamespace));
+        }
     }
 }

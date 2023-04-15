@@ -6,6 +6,8 @@ namespace Softown.Runtime.Domain
 {
     internal readonly struct Namespace
     {
+        public const string Global = null;
+
         readonly string qualifiedName;
         
         public Namespace(string qualifiedName)
@@ -17,6 +19,32 @@ namespace Softown.Runtime.Domain
             Assert.IsTrue(PartsOf(qualifiedName).Distinct().Count() == PartsOf(qualifiedName).Count());
         }
         
+        public bool IsGlobal => qualifiedName == Global;
+
+        public bool Contains(Namespace other)
+        {
+            return IsPartOf(other) || this.Equals(other);
+        }
+        
+        public bool IsPartOf(Namespace other)
+        {
+            return IsDirectParentOf(other) || IsAncestorOf(other);
+        }
+        
+        public bool IsDirectParentOf(Namespace other)
+        {
+            var parts = PartsOf(qualifiedName).ToArray();
+            var otherParts = PartsOf(other.qualifiedName).ToArray();
+            return parts.Length + 1 == otherParts.Length && parts.SequenceEqual(otherParts.Take(parts.Length));
+        }
+        
+        public bool IsAncestorOf(Namespace other)
+        {
+            var parts = PartsOf(qualifiedName).ToArray();
+            var otherParts = PartsOf(other.qualifiedName).ToArray();
+            return parts.Length < otherParts.Length && parts.SequenceEqual(otherParts.Take(parts.Length));
+        }
+
         static IEnumerable<string> PartsOf(string namespaceName)
         {
             return namespaceName == null
@@ -24,6 +52,6 @@ namespace Softown.Runtime.Domain
                 : namespaceName.Split('.');
         }
         
-        public override string ToString() => qualifiedName;
+        public override string ToString() => qualifiedName ?? nameof(Global);
     }
 }

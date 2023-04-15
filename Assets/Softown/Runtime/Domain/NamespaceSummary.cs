@@ -12,57 +12,73 @@ namespace Softown.Runtime.Domain
         public IReadOnlyCollection<ClassSummary> ClassLeafsChildrenOfThisNamespace { get; }
         public IReadOnlyCollection<NamespaceSummary> NamespacesChildrenOfThisNamespace { get; }
 
+        enum CtorCase
+        {
+            None,
+            Name_Match_Exactly_theCandidate,
+            IgnoresCandidates_ThatAreIn_aRoot,
+            Name_IsRootOf_theCandidate,
+            IsInSubnamespace,
+            Name_IsInnerNamespace,
+            Name_DesNotMatch_anyCandidate
+        }
 
         public NamespaceSummary(string name, Type candidate)
         {
             Name = name;
-            
+
             var candidates = new[] { candidate };
-            //case Name_Match_Exactly_theCandidate
+
+            switch(ThisCase(name, candidates))
+            {
+                case CtorCase.Name_Match_Exactly_theCandidate:
+                    ClassLeafsChildrenOfThisNamespace = new List<ClassSummary> { new(candidates.First()) };
+                    NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
+                    break;
+                case CtorCase.IgnoresCandidates_ThatAreIn_aRoot:
+                    ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
+                    NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
+                    break;
+                case CtorCase.Name_IsRootOf_theCandidate:
+                    ClassLeafsChildrenOfThisNamespace = new List<ClassSummary> { new(candidates.First()) };
+                    NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
+                    break;
+                case CtorCase.IsInSubnamespace:
+                    ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
+                    NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>()
+                        { new(candidates.Single().TrunkNamespaceRoot(), candidates) };
+                    break;
+                case CtorCase.Name_IsInnerNamespace:
+                    ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
+                    NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>
+                        { new(candidates.First().Namespace, candidates.First()) };
+                    break;
+                case CtorCase.Name_DesNotMatch_anyCandidate:
+                    ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
+                    NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
+                    break;
+                case CtorCase.None:
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        static CtorCase ThisCase(string name, Type[] candidates)
+        {
+            CtorCase thisCase;
             if(candidates.Single().Namespace == name)
-            {
-                ClassLeafsChildrenOfThisNamespace = new List<ClassSummary> { new(candidates.First()) };
-                NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
-                return;
-            }
-
-            //case IgnoresCandidates_ThatAreIn_aRoot (así que equivalente a  Name_DesNotMatch_anyCandidate).
-            if(candidates.Single().Namespace.IsRootOf(name))
-            {
-                ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
-                NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
-                return;
-            }
-
-            //case Name_IsRootOf_theCandidate
-            if(name.IsSubnamespaceOf(candidates.Single().Namespace))
-            {
-                ClassLeafsChildrenOfThisNamespace = new List<ClassSummary> { new(candidates.First()) };
-                NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
-                return;
-            }
-
-            //case Name_IsRootOf_theCandidate
-            if(candidates.Single().IsInSubnamespaceOf(name))
-            {
-                ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
-                NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>()
-                    { new(candidates.Single().TrunkNamespaceRoot(), candidates) };
-                return;
-            }
-
-            //case Name_IsInnerNamespace
-            if(name.IsInnerNamespaceOf(candidates.Single().Namespace))
-            {
-                ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
-                NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>()
-                    { new(candidates.Single().Namespace.TrunkUntilDeleteSubnamespace(name), candidates) };
-                return;
-            }
-            
-            //case Name_DesNotMatch_anyCandidate
-            ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
-            NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
+                thisCase = CtorCase.Name_Match_Exactly_theCandidate;
+            else if(candidates.Single().Namespace.IsRootOf(name))
+                thisCase = CtorCase.IgnoresCandidates_ThatAreIn_aRoot;
+            else if(name.IsSubnamespaceOf(candidates.Single().Namespace))
+                thisCase = CtorCase.Name_IsRootOf_theCandidate;
+            else if(candidates.Single().IsInSubnamespaceOf(name))
+                thisCase = CtorCase.IsInSubnamespace;
+            else if(name.IsInnerNamespaceOf(candidates.Single().Namespace))
+                thisCase = CtorCase.Name_IsInnerNamespace;
+            else
+                thisCase = CtorCase.Name_DesNotMatch_anyCandidate;
+            return thisCase;
         }
 
         public NamespaceSummary(string name, IEnumerable<Type> candidates)

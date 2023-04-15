@@ -16,7 +16,7 @@ namespace Softown.Runtime.Domain
         public IEnumerable<ClassSummary> OnlyLeafClasses => allClases.Where(c => c.Namespace == Name);
         
         public IEnumerable<NamespaceSummary> DirectChildrenNamespaces => directChildrenNamespaces;
-        public IEnumerable<NamespaceSummary> AllChildrenNamespaces => directChildrenNamespaces.Concat(directChildrenNamespaces.SelectMany(c => c.AllChildrenNamespaces)).Distinct();
+        public IEnumerable<NamespaceSummary> AllChildrenNamespaces => directChildrenNamespaces.Union(directChildrenNamespaces.SelectMany(c => c.AllChildrenNamespaces));
 
         public string Name => qualified.ToString();
 

@@ -7,17 +7,20 @@ namespace Softown.Runtime.Domain
 {
     public readonly struct ClassSummary
     {
+        readonly Namespace fullNamespace;
         public int PublicMethods { get; }
         public int Properties { get; }
-        public string Namespace { get; }
         public string Name { get; }
+        
+        public string Namespace => fullNamespace.ToString();
 
         public ClassSummary([NotNull] Type type)
         {
             Properties = type.GetProperties(Public | Instance | DeclaredOnly).Length;
             PublicMethods = type.GetMethods(Public | Instance | DeclaredOnly).Length;
-            Namespace = type.Namespace;
             Name = type.Name;
+
+            fullNamespace = new(type.Namespace);
 
             PublicMethods -= Properties * 2;
             PublicMethods = Math.Max(0, PublicMethods);

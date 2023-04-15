@@ -71,5 +71,15 @@ namespace Softown.Tests.Editor
                 .Contain(new ClassSummary(typeof(A.A1)))
                 .And.HaveCount(1);
         }
+        
+        [Test]
+        public void NamespaceInnerOfOther_Leafs_AreClassesExactlyInThisNamespace()
+        {
+            new NamespaceSummary("B1", new[] { typeof(A.A1), typeof(A.B1.B11), typeof(A.B1.C.C1) })
+                .OnlyLeafClasses
+                .Should()
+                .Contain(new ClassSummary(typeof(A.A1)))
+                .And.HaveCount(1);
+        }
     }
 }

@@ -6,24 +6,27 @@ namespace Softown.Runtime.Domain
 {
     public sealed record NamespaceSummary 
     {
+        readonly Namespace qualified;
         readonly ClassSummary[] allClases;
+        readonly NamespaceSummary[] directChildrenNamespaces;
         
         public IEnumerable<ClassSummary> AllChildrenClasses => allClases;
         public IEnumerable<ClassSummary> OnlyLeafClasses => allClases.Where(c => c.Namespace == Name);
 
-        public string Name { get; }
+        public string Name => qualified.ToString();
 
-        public NamespaceSummary(string thisNamespaceName, IEnumerable<Type> candidateTypes)
+        public NamespaceSummary(string namespaceName, IEnumerable<Type> candidateTypes)
         {
-            Name = thisNamespaceName;
+            qualified = new(namespaceName);
 
             IEnumerable<Type> chosenCandidates;
-            if(thisNamespaceName == GlobalNamespace)
+            if(namespaceName == GlobalNamespace)
                 chosenCandidates = candidateTypes;
             else
-                chosenCandidates = candidateTypes.Where(c => c.Namespace == thisNamespaceName);
+                chosenCandidates = candidateTypes.Where(c => c.Namespace == namespaceName);
             
             allClases = chosenCandidates.Select(c => new ClassSummary(c)).ToArray();
+            
         }
 
         public const string GlobalNamespace = null;

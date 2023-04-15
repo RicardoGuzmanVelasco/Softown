@@ -11,7 +11,10 @@ namespace Softown.Runtime.Domain
         readonly NamespaceSummary[] directChildrenNamespaces;
         
         public IEnumerable<ClassSummary> AllChildrenClasses => allClases;
+        //public IEnumerable<ClassSummary> AllChildrenClasses => OnlyLeafClasses.Concat(directChildrenNamespaces.SelectMany(c => c.OnlyLeafClasses));
         public IEnumerable<ClassSummary> OnlyLeafClasses => allClases.Where(c => c.Namespace == Name);
+        
+        public IEnumerable<NamespaceSummary> AllChildrenNamespaces => directChildrenNamespaces;
 
         public string Name => qualified.ToString();
 

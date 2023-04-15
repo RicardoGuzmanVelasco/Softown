@@ -8,6 +8,8 @@ namespace Softown.Tests.Editor
 {
     public class SummarizeNamespaceTests
     {
+        readonly NamespaceExtensionsTests namespaceExtensionsTests = new NamespaceExtensionsTests();
+
         [Test]
         public void Obtain_Namespace_FromClass_WithNoNamespace()
         {
@@ -79,6 +81,13 @@ namespace Softown.Tests.Editor
         {
             new NamespaceSummary("NO", new[] { typeof(A.B1.C.C1) }).Should().BeEmpty();
         }
+        
+        [Test]
+        public void Name_DesNotMatch_anyCandidate_ButShareRoots()
+        {
+            new NamespaceSummary("A", new[] { typeof(A.B1.C.C1) }).ClassLeafsChildrenOfThisNamespace.Should().BeEmpty();
+            new NamespaceSummary("A", new[] { typeof(A.B1.C.C1) }).NamespacesChildrenOfThisNamespace.Should().NotBeEmpty();
+        }
 
         [Test]
         public void Name_Match_Exactly_theCandidate()
@@ -91,14 +100,14 @@ namespace Softown.Tests.Editor
         {
             using var _ = new AssertionScope();
             new NamespaceSummary("B1.C", new[] { typeof(A.B1.C.C1) }).Should().HaveCount(1);
-            new NamespaceSummary("B1.C", new[] { typeof(A.B1.C.C1) }).Classes.Should().Be(1);
+            new NamespaceSummary("B1.C", new[] { typeof(A.B1.C.C1) }).ClassLeafsChildrenOfThisNamespace.Should().HaveCount(1);
         }
 
         [Test]
         public void Name_IsInnerNamespace()
         {
             new NamespaceSummary("B1", new[] { typeof(A.B1.C.C1) }).Should().HaveCount(1);
-            new NamespaceSummary("B1", new[] { typeof(A.B1.C.C1) }).Classes.Should().Be(0);
+            new NamespaceSummary("B1", new[] { typeof(A.B1.C.C1) }).ClassLeafsChildrenOfThisNamespace.Should().BeEmpty();
             new NamespaceSummary("B1", new[] { typeof(A.B1.C.C1) }).NamespacesChildrenOfThisNamespace.Should().HaveCount(1);
         }
 
@@ -116,13 +125,37 @@ namespace Softown.Tests.Editor
                 .Should().HaveCount(1);
 
             new NamespaceSummary("A", new[] { typeof(A.B1.B11) })
+                .ClassLeafsChildrenOfThisNamespace.Should().BeEmpty();
+
+            new NamespaceSummary("A", new[] { typeof(A.B1.B11) })
                 .Should().Contain(new ClassSummary(typeof(A.B1.B11)));
         }
 
         [Test]
-        public void NewMethod()
+        public void IgnoresCandidates_ThatAreIn_aRoot()
         {
-            new NamespaceSummary("A.B1", new[] { typeof(A.A1), typeof(A.B1.B11) }).Classes.Should().Be(1);
+            var sut = new NamespaceSummary("A.B1", new[] { typeof(A.A1) });
+            sut.Should().BeEmpty();
+        }
+        
+        [Test]
+        public void Creates_FromTwoCandidates_TheSameThatAddsIndependently()
+        {
+            var sut = new NamespaceSummary("A.B1", new[] { typeof(A.A1), typeof(A.B1.B11) });
+            sut.ClassLeafsChildrenOfThisNamespace.Should().HaveCount(1);
+        }
+
+        [Test, Description("No mergea bien namespaces pero de momento nos vale")]
+        public void Creates_FromSomeCandidates_MakesTheNamespacesTree()
+        {
+            var sut = new NamespaceSummary("A", new[]
+            {
+                typeof(A.A1), typeof(A.B1.B11), typeof(A.B1.C.C1), typeof(A.B2.C.C1)
+            });
+            
+            sut.Should().HaveCount(4);
+            sut.ClassLeafsChildrenOfThisNamespace.Should().HaveCount(1);
+            sut.NamespacesChildrenOfThisNamespace.Should().HaveCount(3);
         }
 
         [Test]

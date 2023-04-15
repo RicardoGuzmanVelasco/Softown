@@ -9,14 +9,16 @@ namespace Softown.Runtime.Domain
     {
         public int PublicMethods { get; }
         public int Properties { get; }
+        public string Namespace { get; }
         public string Name { get; }
 
         public ClassSummary([NotNull] Type type)
         {
             Properties = type.GetProperties(Public | Instance | DeclaredOnly).Length;
             PublicMethods = type.GetMethods(Public | Instance | DeclaredOnly).Length;
+            Namespace = type.Namespace;
             Name = type.Name;
-            
+
             PublicMethods -= Properties * 2;
             PublicMethods = Math.Max(0, PublicMethods);
 
@@ -25,7 +27,7 @@ namespace Softown.Runtime.Domain
         }
 
         public static ClassSummary Empty => new();
-        
+
         public override string ToString() => $"{Name} ({PublicMethods}m,{Properties}p)";
     }
 }

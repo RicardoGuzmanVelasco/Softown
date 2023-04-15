@@ -1,4 +1,5 @@
-﻿using A.B1;
+﻿using System.Linq;
+using A.B1;
 using FluentAssertions;
 using NUnit.Framework;
 using Softown.Runtime.Domain;
@@ -18,13 +19,7 @@ namespace Softown.Tests.Editor
         [Test]
         public void Obtain_PackageClasses_From_Assembly()
         {
-            Sut.Classes.Should().BePositive();
-        }
-
-        [Test]
-        public void Store_RootNamespaces()
-        {
-            Sut.NamespacesChildrenOfGlobal.Should().HaveCount(1);
+            Sut.Count().Should().BePositive();
         }
 
         [Test]

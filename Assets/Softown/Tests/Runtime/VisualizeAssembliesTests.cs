@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Softown.Runtime.Domain;
@@ -27,7 +28,7 @@ namespace Softown.Tests.Runtime
             var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
 
             var s = 0;
-            while(s <= assembly.Classes)
+            while(s <= assembly.Count())
             {
                 var urbanPlanning = new Architect().Design(assembly, s++);
                 sut.Raise(urbanPlanning);

@@ -26,5 +26,11 @@ namespace Softown.Tests.Editor
             new ClassSummary(typeof(TwoProperties)).Properties.Should().Be(2);
             new ClassSummary(typeof(ThreeProperties)).Properties.Should().Be(3);
         }
+        
+        [Test]
+        public void Obtain_Namespace_FromClass()
+        {
+            new ClassSummary(typeof(TwoProperties)).Namespace.Should().Be("Softown.Tests.TestAPI");
+        }
     }
 }

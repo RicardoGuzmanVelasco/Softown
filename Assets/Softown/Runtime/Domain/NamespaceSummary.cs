@@ -9,9 +9,8 @@ namespace Softown.Runtime.Domain
     public readonly struct NamespaceSummary : IEnumerable<ClassSummary>
     {
         public string Name { get; }
-        IReadOnlyCollection<ClassSummary> ClassLeafsChildrenOfThisNamespace { get; }
+        public IReadOnlyCollection<ClassSummary> ClassLeafsChildrenOfThisNamespace { get; }
         public IReadOnlyCollection<NamespaceSummary> NamespacesChildrenOfThisNamespace { get; }
-        public int Classes => ClassLeafsChildrenOfThisNamespace.Count;
 
         public NamespaceSummary(string name, IEnumerable<Type> candidates)
         {
@@ -24,6 +23,15 @@ namespace Softown.Runtime.Domain
                 if(candidates.Single().Namespace == name)
                 {
                     ClassLeafsChildrenOfThisNamespace = new List<ClassSummary> { new(candidates.First()) };
+                    NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
+                    return;
+                }
+            
+            //case IgnoresCandidates_ThatAreIn_aRoot (así que equivalente a  Name_DesNotMatch_anyCandidate).
+            if(candidates.Count() == 1)
+                if(candidates.Single().Namespace.IsRootOf(name))
+                {
+                    ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
                     NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
                     return;
                 }
@@ -57,14 +65,19 @@ namespace Softown.Runtime.Domain
                     return;
                 }
 
-            //case OneSubnamespace_withaClass_ButAlso_Directly_aChildClass
-            if(candidates.Count() == 2)
+            //case multiple candidates
+            if(candidates.Count() > 1)
             {
-                NamespacesChildrenOfThisNamespace = new NamespaceSummary(name, candidates.Take(1)).NamespacesChildrenOfThisNamespace
-                     .Concat(new NamespaceSummary(name, candidates.Skip(1)).NamespacesChildrenOfThisNamespace)
+                var x = candidates.Take(1);
+                var xs = candidates.Skip(1);
+                var xNamespace = new NamespaceSummary(name, x);
+                var xsNamespace = new NamespaceSummary(name, xs);
+                
+                NamespacesChildrenOfThisNamespace = xNamespace.NamespacesChildrenOfThisNamespace
+                     .Union(xsNamespace.NamespacesChildrenOfThisNamespace)
                      .ToList();
-                ClassLeafsChildrenOfThisNamespace = new NamespaceSummary(name, candidates.Take(1)).ClassLeafsChildrenOfThisNamespace
-                    .Concat(new NamespaceSummary(name, candidates.Skip(1)).ClassLeafsChildrenOfThisNamespace)
+                ClassLeafsChildrenOfThisNamespace = xNamespace.ClassLeafsChildrenOfThisNamespace
+                    .Union(xsNamespace.ClassLeafsChildrenOfThisNamespace)
                     .ToList();
                 return;
             }
@@ -73,15 +86,8 @@ namespace Softown.Runtime.Domain
             ClassLeafsChildrenOfThisNamespace = new List<ClassSummary>();
             NamespacesChildrenOfThisNamespace = new List<NamespaceSummary>();
         }
-
-        static bool IsEligible(string name, Type type)
-        {
-            //global:: case.
-            if(type.Namespace is null)
-                return name is null;
-
-            return type.Namespace.StartsWith(name);
-        }
+        
+        public const string GlobalNamespace = null;
 
         public IEnumerator<ClassSummary> GetEnumerator()
         {
@@ -90,7 +96,10 @@ namespace Softown.Runtime.Domain
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        public static string GlobalNamespace => null;
+        
+        public bool Equals(NamespaceSummary other) => Name == other.Name;
+        public override bool Equals(object obj) => obj is NamespaceSummary other && Equals(other);
+        public override int GetHashCode() => (Name != null ? Name.GetHashCode() : 0);
 
         public override string ToString() => Name;
     }

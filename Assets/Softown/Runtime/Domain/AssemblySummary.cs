@@ -10,7 +10,7 @@ namespace Softown.Runtime.Domain
         public string Name { get; }
         public IReadOnlyCollection<NamespaceSummary> RootNamespaces { get; }
 
-        public int Classes => RootNamespaces.Sum(n => n.Classes);
+        public int Classes => RootNamespaces.Sum(n => n.Count());
         public static AssemblySummary Empty => new();
 
         public AssemblySummary(Assembly assembly)

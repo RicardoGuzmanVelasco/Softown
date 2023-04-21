@@ -42,14 +42,16 @@ namespace Softown.Editor
             await Task.Delay(TimeSpan.FromSeconds(.5f));
             
             var summary = new AssemblySummary(assembly);
-            SpawnVisualizer(summary);
+            SetUpVisualizer(summary);
         }
 
-        static void SpawnVisualizer(AssemblySummary summary)
+        static void SetUpVisualizer(AssemblySummary summary)
         {
             new GameObject("", typeof(AssemblyVisualizer))
                 .GetComponent<AssemblyVisualizer>()
                 .Visualize(summary);
+
+            Camera.main.gameObject.AddComponent<MoveCameraWithWASD>();
         }
     }
 }

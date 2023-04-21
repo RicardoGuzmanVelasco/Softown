@@ -23,5 +23,7 @@ namespace Softown.Runtime.Domain
         }
 
         public static Blueprint Blank => new();
+        
+        public override string ToString() => $"{BuildingName} ({Floors} floors, {FoundationsWidth} foundations)";
     }
 }

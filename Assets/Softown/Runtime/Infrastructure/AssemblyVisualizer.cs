@@ -31,7 +31,7 @@ namespace Softown.Runtime.Infrastructure
 
         void Update()
         {
-            if(Input.anyKeyDown)
+            if(Input.GetKeyDown(KeyCode.Space))
                 skipOrdered = true;
         }
     }

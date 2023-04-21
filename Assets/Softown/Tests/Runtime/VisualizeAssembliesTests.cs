@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Linq;
-using System.Reflection;
-using NUnit.Framework;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Infrastructure;
 using UnityEngine;
@@ -9,7 +7,7 @@ using UnityEngine.TestTools;
 
 namespace Softown.Tests.Runtime
 {
-    [Ignore("This is not a test, it is a tool to visualize the assemblies")]
+    //[Ignore("This is not a test, it is a tool to visualize the assemblies")]
     public class VisualizeAssembliesTests
     {
         [UnityTest]

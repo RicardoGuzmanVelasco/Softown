@@ -1,8 +1,10 @@
 {
-    "name": "Softown",
+    "name": "Softown.Editor",
     "rootNamespace": "",
     "references": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

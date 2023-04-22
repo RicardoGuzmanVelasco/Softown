@@ -35,18 +35,9 @@ namespace Softown.Runtime.Infrastructure
             Assert.IsTrue(Floors > 0);
         }
 
-        private void OnMouseEnter()
+        void OnMouseEnter()
         {
-            new BuildingDisplay().For(this);
-        }
-    }
-
-    public class BuildingDisplay
-    {
-        public void For(Building building)
-        {
-            UnityEngine.Debug.Log(building.Blueprint.BuildingName);
-            Object.FindObjectOfType<Tooltip>().Hover(building);
+            FindObjectOfType<Tooltip>().Hover(this);
         }
     }
 }

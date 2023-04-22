@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Infrastructure;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Softown.Editor
 {
@@ -39,6 +40,9 @@ namespace Softown.Editor
         static async void Raise(System.Reflection.Assembly assembly)
         {
             UnityEditor.EditorApplication.EnterPlaymode();
+            await Task.Delay(TimeSpan.FromSeconds(.5f));
+            
+            SceneManager.LoadSceneAsync("Softown");
             await Task.Delay(TimeSpan.FromSeconds(.5f));
             
             var summary = new AssemblySummary(assembly);

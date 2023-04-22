@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Softown/Scenes/Softown.unity
+    guid: 37600bb67306fc6429a14af838bbeaf3
   m_configObjects: {}

@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Domain.Plotting;
 using UnityEngine;
@@ -47,17 +46,7 @@ namespace Softown.Runtime.Infrastructure
         public void For(Building building)
         {
             UnityEngine.Debug.Log(building.Blueprint.BuildingName);
-        }
-    }
-
-    public class CursorInfo : MonoBehaviour
-    {
-        static CursorInfo instance;
-        public static CursorInfo Instance => instance ??= new GameObject("").AddComponent<CursorInfo>();
-
-        void Awake()
-        {
-            throw new NotImplementedException();
+            Object.FindObjectOfType<Tooltip>().Hover(building);
         }
     }
 }

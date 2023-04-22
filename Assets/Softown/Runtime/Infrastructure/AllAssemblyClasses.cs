@@ -31,4 +31,31 @@ namespace Softown.Runtime.Infrastructure
             SpawnGroundFor(plot);
         }
     }
+    
+    public sealed class AisledGlobalClasses : Neighbourhood
+    {
+        public override void Raise(UrbanPlanning urbanPlanning)
+        {
+            name = urbanPlanning.Name;
+            
+            var foundations = urbanPlanning.Select(b => Foundation.SquareOf(b.FoundationsWidth));
+            var plot = new Plot(new GreedySquareUp(), foundations.ToArray());
+            
+            var blueprints = urbanPlanning.ToList();
+
+            foreach(var f in plot.Settlements)
+            {
+                var selected = blueprints.First(b => b.FoundationsWidth == f.Block.Size.x);
+                blueprints.Remove(selected);
+
+                var building = new GameObject(selected.BuildingName, typeof(Building)).GetComponent<Building>();
+                building.transform.SetParent(transform);
+                building.Raise(selected);
+
+                building.transform.position += f.Center.To3DWithY(0);
+            }
+
+            SpawnGroundFor(plot);
+        }
+    }
 }

@@ -21,7 +21,7 @@ namespace Softown.Tests.Runtime
         [Test]
         public void Raise_aNeighbourhood()
         {
-            var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
+            var sut = new GameObject("", typeof(AllAssemblyClasses)).GetComponent<Neighbourhood>();
             var urbanPlanning = new Architect().Design(new AssemblySummary(typeof(TwoMethods).Assembly));
 
             sut.Raise(urbanPlanning);
@@ -32,7 +32,7 @@ namespace Softown.Tests.Runtime
         [Test]
         public void Buildings_NeverHave_SameCenter()
         {
-            var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
+            var sut = new GameObject("", typeof(AllAssemblyClasses)).GetComponent<Neighbourhood>();
             var urbanPlanning = new Architect().Design(new AssemblySummary(typeof(TwoMethods).Assembly));
 
             sut.Raise(urbanPlanning);
@@ -46,7 +46,7 @@ namespace Softown.Tests.Runtime
         [Test]
         public void Space_BetweenBuildings_AreTheSame()
         {
-            var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
+            var sut = new GameObject("", typeof(AllAssemblyClasses)).GetComponent<Neighbourhood>();
             var urbanPlanning = new Architect().Design(new AssemblySummary(typeof(TwoMethods).Assembly));
 
             sut.Raise(urbanPlanning);

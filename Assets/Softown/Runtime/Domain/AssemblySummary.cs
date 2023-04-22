@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Softown.Runtime.Domain
 {
     public readonly struct AssemblySummary
     {
-        readonly NamespaceSummary globalNamespace;
         public string Name { get; }
         
-        public IEnumerable<ClassSummary> AllContainedClasses => globalNamespace.AllChildrenClasses;
+        public NamespaceSummary GlobalNamespace { get; }
 
         public AssemblySummary(Assembly assembly)
         {
@@ -17,7 +15,7 @@ namespace Softown.Runtime.Domain
                 .ExcludeUnityMonoScripts()
                 .ExcludeNoSummarizableTypes();
             
-            globalNamespace = new(Namespace.Global, types);
+            GlobalNamespace = new(Namespace.Global, types);
         }
         
         public static AssemblySummary Empty => new();

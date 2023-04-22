@@ -19,7 +19,7 @@ namespace Softown.Runtime.Domain
             return new
             (
                 assemblySummary.Name,
-                assemblySummary.AllContainedClasses.SkipLast(skipLast).Select(Design)
+                assemblySummary.GlobalNamespace.AllChildrenClasses.SkipLast(skipLast).Select(Design)
             );
         }
     }

@@ -16,7 +16,7 @@ namespace Softown.Runtime.Infrastructure
 
         IEnumerator VisualizeSkippingOneAtATime(AssemblySummary summary)
         {
-            for(var skipped = 0; skipped < summary.AllContainedClasses.Count(); skipped++)
+            for(var skipped = 0; skipped < summary.GlobalNamespace.AllChildrenClasses.Count(); skipped++)
             {
                 var sut = new GameObject("", typeof(Neighbourhood)).GetComponent<Neighbourhood>();
 

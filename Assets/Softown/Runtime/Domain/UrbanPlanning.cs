@@ -5,20 +5,26 @@ using JetBrains.Annotations;
 
 namespace Softown.Runtime.Domain
 {
-    public readonly struct UrbanPlanning : IEnumerable<Blueprint>
+    public readonly struct UrbanPlanning : IEnumerable<District>
     {
-        readonly IReadOnlyCollection<District> districts;
+        readonly IReadOnlyCollection<District> neighbourhoods;
         public string Name { get; }
 
         public UrbanPlanning(string name, [NotNull] IEnumerable<Blueprint> blueprints)
         {
-            districts = new[]{new District(blueprints)};
+            neighbourhoods = new[]{new District(blueprints)};
             Name = name;
         }
         
-        public int Buildings => districts.First().Count();
+        public UrbanPlanning(string name, [NotNull] IEnumerable<District> districts)
+        {
+            this.neighbourhoods = new List<District>(districts);
+            Name = name;
+        }
+
+        public int Buildings => neighbourhoods.Sum(d => d.Buildings);
         
-        public IEnumerator<Blueprint> GetEnumerator() => districts.SelectMany(d => d).GetEnumerator();
+        public IEnumerator<District> GetEnumerator() => neighbourhoods.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

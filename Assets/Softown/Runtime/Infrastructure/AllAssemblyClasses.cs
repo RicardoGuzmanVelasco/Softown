@@ -10,15 +10,16 @@ namespace Softown.Runtime.Infrastructure
         public override void Raise(UrbanPlanning urbanPlanning)
         {
             name = urbanPlanning.Name;
+            var neighbourhood = urbanPlanning.First();
             
-            var foundations = urbanPlanning.Select(b => Foundation.SquareOf(b.FoundationsWidth));
+            var foundations = neighbourhood.Select(b => Foundation.SquareOf(b.FoundationsWidth));
             var plot = new Plot(new GreedySquareUp(), foundations.ToArray());
             
-            var blueprints = urbanPlanning.ToList();
+            var blueprints = neighbourhood.ToList();
 
             foreach(var f in plot.Settlements)
             {
-                var selected = blueprints.First(b => b.FoundationsWidth == f.Block.Size.x);
+                var selected = neighbourhood.First(b => b.FoundationsWidth == f.Block.Size.x);
                 blueprints.Remove(selected);
 
                 var building = new GameObject(selected.BuildingName, typeof(Building)).GetComponent<Building>();
@@ -37,15 +38,16 @@ namespace Softown.Runtime.Infrastructure
         public override void Raise(UrbanPlanning urbanPlanning)
         {
             name = urbanPlanning.Name;
+            var neighbourhood = urbanPlanning.First();
             
-            var foundations = urbanPlanning.Select(b => Foundation.SquareOf(b.FoundationsWidth));
+            var foundations = neighbourhood.Select(b => Foundation.SquareOf(b.FoundationsWidth));
             var plot = new Plot(new GreedySquareUp(), foundations.ToArray());
             
-            var blueprints = urbanPlanning.ToList();
+            var blueprints = neighbourhood.ToList();
 
             foreach(var f in plot.Settlements)
             {
-                var selected = blueprints.First(b => b.FoundationsWidth == f.Block.Size.x);
+                var selected = neighbourhood.First(b => b.FoundationsWidth == f.Block.Size.x);
                 blueprints.Remove(selected);
 
                 var building = new GameObject(selected.BuildingName, typeof(Building)).GetComponent<Building>();

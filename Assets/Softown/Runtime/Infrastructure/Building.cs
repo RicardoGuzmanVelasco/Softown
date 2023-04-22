@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Domain.Plotting;
 using UnityEngine;
@@ -16,17 +17,47 @@ namespace Softown.Runtime.Infrastructure
 
         public float WhereIsTheGround => transform.position.y;
 
+        public Blueprint Blueprint { get; private set; }
+
         public void Raise(Blueprint blueprint)
         {
             GameObject.CreatePrimitive(Cube).transform.SetParent(transform);
+
+            Blueprint = blueprint;
 
             transform.localScale =
                 new Vector3(blueprint.FoundationsWidth, blueprint.Floors + Ground.y, blueprint.FoundationsWidth);
             transform.position += Vector3.up * (blueprint.Floors / 2f);
 
+            gameObject.AddComponent<Rigidbody>().isKinematic = true;
+
             Assert.IsTrue(Foundation.Size.x > 0);
             Assert.AreEqual(transform.localScale.x, transform.localScale.z, "Ahora mismo solo cimientos cuadrados");
             Assert.IsTrue(Floors > 0);
+        }
+
+        private void OnMouseEnter()
+        {
+            new BuildingDisplay().For(this);
+        }
+    }
+
+    public class BuildingDisplay
+    {
+        public void For(Building building)
+        {
+            UnityEngine.Debug.Log(building.Blueprint.BuildingName);
+        }
+    }
+
+    public class CursorInfo : MonoBehaviour
+    {
+        static CursorInfo instance;
+        public static CursorInfo Instance => instance ??= new GameObject("").AddComponent<CursorInfo>();
+
+        void Awake()
+        {
+            throw new NotImplementedException();
         }
     }
 }

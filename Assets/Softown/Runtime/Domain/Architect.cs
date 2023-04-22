@@ -16,10 +16,15 @@ namespace Softown.Runtime.Domain
         {
             Assert.IsFalse(assemblySummary.Equals(AssemblySummary.Empty));
 
+            var classesByNamespaces = assemblySummary.GlobalNamespace.AllChildrenClasses
+                .GroupBy(c => c.fullNamespace)
+                .ToDictionary(g => g.Key, g => g.ToArray());
+            var districts = classesByNamespaces.Select(kvp => new District(kvp.Value.Select(Design)));
+            
             return new
             (
                 assemblySummary.Name,
-                assemblySummary.GlobalNamespace.AllChildrenClasses.SkipLast(skipLast).Select(Design)
+                districts
             );
         }
     }

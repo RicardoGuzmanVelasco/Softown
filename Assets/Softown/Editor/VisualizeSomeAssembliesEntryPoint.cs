@@ -37,6 +37,13 @@ namespace Softown.Editor
             Raise(assembly);
         }
         
+        [UnityEditor.MenuItem("Softown/Raise/Testown")]
+        static void RaiseTestown()
+        {
+            var assembly = typeof(NoNamespace).Assembly;
+            Raise(assembly);
+        }
+        
         static async void Raise(System.Reflection.Assembly assembly)
         {
             UnityEditor.EditorApplication.EnterPlaymode();

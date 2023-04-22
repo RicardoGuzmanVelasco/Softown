@@ -1,7 +1,7 @@
 {
     "name": "Softown.Editor",
     "rootNamespace": "",
-    "references": ["GUID:eeec3e3b50be5cb4486fd9ce5c5ecc27"],
+    "references": ["GUID:eeec3e3b50be5cb4486fd9ce5c5ecc27","GUID:bfa08e6fc1d04d659bb073c766d6e052"],
     "includePlatforms": [
         "Editor"
     ],

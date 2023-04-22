@@ -33,12 +33,9 @@ namespace Softown.Runtime.Infrastructure
 
         void SpawnGroundFor(Plot plot)
         {
-            var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            ground.name = "Ground";
+            var ground = new GameObject("Ground");
+            ground.AddComponent<Ground>().Raise(plot);
             ground.transform.SetParent(transform);
-            ground.GetComponent<MeshRenderer>().material.color = Color.green * Color.gray;
-            ground.transform.position += plot.Center.To3DWithY(-0.5f);
-            ground.transform.localScale = plot.Center.To3DWithY(0.1f);
         }
     }
 }

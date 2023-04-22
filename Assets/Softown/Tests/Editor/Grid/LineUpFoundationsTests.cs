@@ -24,7 +24,7 @@ namespace Softown.Tests.Editor
 
             var result = sut.Order(new[] { SquareOf(2), SquareOf(1) });
 
-            result.Blocks.Should()
+            result.Settlements.Should()
                 .HaveCount(2)
                 .And.Contain(new Settled((0, 0), SquareOf(2)))
                 .And.Contain(new Settled((2, 0), SquareOf(1)));
@@ -37,7 +37,7 @@ namespace Softown.Tests.Editor
 
             var result = sut.Order(new[] { SquareOf(2), SquareOf(1) });
 
-            result.Blocks.Should()
+            result.Settlements.Should()
                 .HaveCount(2)
                 .And.Contain(new Settled((0, 0), SquareOf(2)))
                 .And.Contain(new Settled((7, 0), SquareOf(1)));
@@ -50,7 +50,7 @@ namespace Softown.Tests.Editor
 
             var result = sut.Order(new[] { SquareOf(2), SquareOf(1), SquareOf(3) });
 
-            result.Blocks.Should()
+            result.Settlements.Should()
                 .HaveCount(3)
                 .And.Contain(new Settled((0, 0), SquareOf(2)))
                 .And.Contain(new Settled((2, 0), SquareOf(1)))
@@ -64,7 +64,7 @@ namespace Softown.Tests.Editor
 
             var result = sut.Order(new[] { SquareOf(2), SquareOf(1), SquareOf(3) });
 
-            result.Blocks.Should()
+            result.Settlements.Should()
                 .HaveCount(3)
                 .And.Contain(new Settled((0, 0), SquareOf(2)))
                 .And.Contain(new Settled((3, 0), SquareOf(1)))

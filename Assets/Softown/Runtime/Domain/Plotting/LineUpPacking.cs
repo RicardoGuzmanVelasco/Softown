@@ -26,7 +26,7 @@ namespace Softown.Runtime.Domain.Plotting
                 origin.x += foundation.Size.x + space;
             }
             
-            Assert.IsTrue(result.All(k => k.At.y == 0)); //a modelo.
+            Assert.IsTrue(result.All(k => k.AtLeftBottom.y == 0)); //a modelo.
             return new(result);
         }
     }

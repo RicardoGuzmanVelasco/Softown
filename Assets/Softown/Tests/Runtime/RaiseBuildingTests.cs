@@ -44,7 +44,7 @@ namespace Softown.Tests.Runtime
         {
             sut.Foundation.Size.x.Should().BePositive();
         }
-
+        
         [Test]
         public void Raise_ABuilding_With_ADifferent_Foundation()
         {

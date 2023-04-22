@@ -16,7 +16,7 @@ namespace Softown.Runtime.Infrastructure
             
             var blueprints = urbanPlanning.ToList();
 
-            foreach(var f in plot.Blocks)
+            foreach(var f in plot.Settlements)
             {
                 var selected = blueprints.First(b => b.FoundationsWidth == f.Block.Size.x);
                 blueprints.Remove(selected);
@@ -25,7 +25,7 @@ namespace Softown.Runtime.Infrastructure
                 building.transform.SetParent(transform);
                 building.Raise(selected);
 
-                building.transform.position += f.At.To3DWithY(0);
+                building.transform.position += f.Center.To3DWithY(0);
             }
 
             SpawnGroundFor(plot);

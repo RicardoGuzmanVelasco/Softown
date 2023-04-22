@@ -40,12 +40,28 @@ namespace Softown.Tests.Editor
         }
 
         [Test]
-        public void Center_OfPlot_OfTestown()
+        public void Center_OfPlot_Of3x2_Size1()
         {
-            var settled = new Settled((0, 0), Foundation.SquareOf(1));
+            var settled = Foundation.SquareOf(1).AtZero();
             var sut = new Plot(new GreedySquareUp(), settled, settled, settled, settled, settled, settled);
 
             sut.Center.Should().Be((1.5f, 1f), "hay tres casas de (1x1) en X y dos en cada Y");
+        }
+        
+        [Test]
+        public void Center_OfPlot_WithDifferentWidths()
+        {
+            var sut = new Plot(new GreedySquareUp(), Foundation.SquareOf(1).AtZero(), Foundation.RectangleOf(2,1).AtZero());
+
+            sut.Center.Should().Be((1.5f, 0.5f));
+        }
+        
+        [Test]
+        public void Center_OfPlot_WithDifferentSizes()
+        {
+            var sut = new Plot(new GreedySquareUp(), Foundation.SquareOf(1).AtZero(), Foundation.SquareOf(2).AtZero());
+
+            sut.Center.Should().Be((1.5f, 1f));
         }
     }
 }

@@ -19,7 +19,8 @@ namespace Softown.Runtime.Domain
             Assert.IsTrue(PartsOf(qualifiedName).Distinct().Count() == PartsOf(qualifiedName).Count());
         }
         
-        public bool IsGlobal => qualifiedName == Global;
+        public bool IsGlobal => RepresentsGlobal(qualifiedName);
+        public static bool RepresentsGlobal(string qualifiedName) => qualifiedName is Global or nameof(Global);
 
         public bool Contains(Namespace other)
         {

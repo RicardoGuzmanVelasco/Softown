@@ -38,7 +38,7 @@ namespace Softown.Runtime.Infrastructure
         public override void Raise(UrbanPlanning urbanPlanning)
         {
             name = urbanPlanning.Name;
-            var neighbourhood = urbanPlanning.First();
+            var neighbourhood = urbanPlanning.Where(d => Namespace.RepresentsGlobal(d.Name)).SelectMany(b => b);
             
             var foundations = neighbourhood.Select(b => Foundation.SquareOf(b.FoundationsWidth));
             var plot = new Plot(new GreedySquareUp(), foundations.ToArray());

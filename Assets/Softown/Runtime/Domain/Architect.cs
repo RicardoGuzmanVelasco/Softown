@@ -19,7 +19,7 @@ namespace Softown.Runtime.Domain
             var classesByNamespaces = assemblySummary.GlobalNamespace.AllChildrenClasses
                 .GroupBy(c => c.fullNamespace)
                 .ToDictionary(g => g.Key, g => g.ToArray());
-            var districts = classesByNamespaces.Select(kvp => new District(kvp.Value.Select(Design)));
+            var districts = classesByNamespaces.Select(kvp => new District(kvp.Key.ToString(), kvp.Value.Select(Design)));
             
             return new
             (

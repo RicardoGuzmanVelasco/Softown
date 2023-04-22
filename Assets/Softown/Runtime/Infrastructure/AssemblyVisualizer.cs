@@ -18,7 +18,7 @@ namespace Softown.Runtime.Infrastructure
         {
             for(var skipped = 0; skipped < summary.GlobalNamespace.AllChildrenClasses.Count(); skipped++)
             {
-                var sut = new GameObject("", typeof(AllAssemblyClasses)).GetComponent<Neighbourhood>();
+                var sut = new GameObject("", typeof(AisledGlobalClasses)).GetComponent<Neighbourhood>();
 
                 var urbanPlanning = new Architect().Design(summary, skipped);
                 sut.Raise(urbanPlanning);

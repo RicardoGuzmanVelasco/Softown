@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DG.Tweening;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Domain.Plotting;
@@ -24,6 +25,10 @@ namespace Softown.Runtime.Infrastructure
         
         public void Raise(Blueprint blueprint)
         {
+            //ESTO ES UNA REGRESIÓN. POR ALGÚN MOTIVO NO ESTÁ FUNCIONANDO BIEN Y HACE FALTA ESTA SALVAGUARDA. ARREGLAR.
+            if(FindObjectsOfType<Building>().Any(b => b.represented.Equals(blueprint)))
+                return;
+            
             var cube = GameObject.CreatePrimitive(Cube).transform;
                 cube.SetParent(transform);
             cube.GetComponent<MeshRenderer>().material.color = Color.gray;

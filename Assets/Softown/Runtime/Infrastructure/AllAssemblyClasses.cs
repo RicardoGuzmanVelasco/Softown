@@ -8,7 +8,7 @@ namespace Softown.Runtime.Infrastructure
     {
         protected override IEnumerable<Blueprint> Blueprints(UrbanPlanning urbanPlanning)
         {
-            return urbanPlanning.SelectMany(b => b);
+            return urbanPlanning.SelectMany(b => b).Distinct();
         }
     }
 }

@@ -26,6 +26,7 @@ namespace Softown.Runtime.Infrastructure
         {
             var cube = GameObject.CreatePrimitive(Cube).transform;
                 cube.SetParent(transform);
+            cube.GetComponent<MeshRenderer>().material.color = Color.gray;
 
             represented = blueprint;
 

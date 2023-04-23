@@ -45,7 +45,6 @@ namespace Softown.Runtime.Infrastructure
         {
             VisualizeSkippingOneAtATime(summary);
         }
-        
 
         async void VisualizeSkippingOneAtATime(AssemblySummary summary)
         {

@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 
 namespace Softown.Runtime.Domain
 {
-    public sealed record NamespaceSummary 
+    public sealed record NamespaceSummary
     {
         readonly Namespace qualified;
         readonly ClassSummary[] allClases;

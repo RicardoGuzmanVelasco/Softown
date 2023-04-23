@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Softown.Runtime.Infrastructure
 {
-    public sealed class AllAssemblyClasses : Neighbourhood
+    public sealed class AisledGlobalClasses : Neighbourhood
     {
         public override void Raise(UrbanPlanning urbanPlanning)
         {
             name = urbanPlanning.Name;
-            var neighbourhood = urbanPlanning.SelectMany(b => b);
+            var neighbourhood = urbanPlanning.Where(d => Namespace.RepresentsGlobal(d.Name)).SelectMany(b => b);
             
             var foundations = neighbourhood.Select(b => Foundation.SquareOf(b.FoundationsWidth));
             var plot = new Plot(new GreedySquareUp(), foundations.ToArray());

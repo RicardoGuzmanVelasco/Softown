@@ -17,7 +17,7 @@ namespace Softown.Runtime.Infrastructure
         {
             name = urbanPlanning.Name;
             var neighbourhood = Blueprints(urbanPlanning);
-            Assert.AreEqual(neighbourhood, neighbourhood.Distinct());
+            Assert.AreEqual(neighbourhood.Distinct().Count(), neighbourhood.Count());
             
             var foundations = neighbourhood.Select(b => Foundation.SquareOf(b.FoundationsWidth));
 

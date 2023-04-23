@@ -1,6 +1,7 @@
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using Softown.Runtime.Domain;
 using Softown.Runtime.Infrastructure;
 using UnityEngine;
 
@@ -26,9 +27,12 @@ namespace Softown.Tests.Runtime
         }
 
         [Test]
-        public void Building_Cannot_HaveScale0()
+        public void Building_Cannot_HaveScale0_ButBlankHas()
         {
+            sut.Raise(blueprint: new(1, 1));
             sut.Floors.Should().BePositive();
+            
+            Blueprint.Blank.Floors.Should().Be(0);
         }
 
         [Test]

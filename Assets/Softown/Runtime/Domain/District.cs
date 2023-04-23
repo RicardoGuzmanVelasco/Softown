@@ -16,6 +16,7 @@ namespace Softown.Runtime.Domain
         {
             Assert.IsTrue(blueprints.Any());
             Assert.IsFalse(blueprints.Any(b => b.Equals(Blueprint.Blank)));
+            Assert.AreEqual(blueprints.Distinct().Count(), blueprints.Count());
 
             this.blueprints = new List<Blueprint>(blueprints);
             this.Name = "";

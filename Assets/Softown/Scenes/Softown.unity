@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strategy: 0
-  autoVisualize: 4
+  autoVisualize: 2
 --- !u!1 &746253589
 GameObject:
   m_ObjectHideFlags: 0

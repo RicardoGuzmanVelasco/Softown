@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Domain.Plotting;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Softown.Runtime.Infrastructure
 {
@@ -16,8 +17,10 @@ namespace Softown.Runtime.Infrastructure
         {
             name = urbanPlanning.Name;
             var neighbourhood = Blueprints(urbanPlanning);
+            Assert.AreEqual(neighbourhood, neighbourhood.Distinct());
             
             var foundations = neighbourhood.Select(b => Foundation.SquareOf(b.FoundationsWidth));
+
             var plot = new Plot(new GreedySquareUp(), foundations.ToArray());
             await SpawnGroundFor(plot);
 

@@ -11,10 +11,7 @@ namespace Softown.Runtime.Domain
         public string Name { get; }
 
         public UrbanPlanning(string name, [NotNull] IEnumerable<Blueprint> blueprints)
-        {
-            neighbourhoods = new[]{new District(blueprints)};
-            Name = name;
-        }
+        : this(name, new[]{new District(blueprints)}) { }
         
         public UrbanPlanning(string name, [NotNull] IEnumerable<District> districts)
         {

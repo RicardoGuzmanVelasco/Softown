@@ -62,7 +62,7 @@ namespace Softown.Editor
                 .GetComponent<AssemblyVisualizer>()
                 .Visualize(summary);
 
-            Camera.main.gameObject.AddComponent<MoveCameraWithWASD>();
+            Camera.main.gameObject.AddComponent<MoveWithWASD>();
         }
     }
 }

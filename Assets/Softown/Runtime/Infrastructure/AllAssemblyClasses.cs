@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Domain.Plotting;
 using UnityEngine;
@@ -7,7 +9,7 @@ namespace Softown.Runtime.Infrastructure
 {
     public sealed class AllAssemblyClasses : Neighbourhood
     {
-        public override void Raise(UrbanPlanning urbanPlanning)
+        public override async Task Raise(UrbanPlanning urbanPlanning, IProgress<float> progress = null)
         {
             name = urbanPlanning.Name;
             var neighbourhood = urbanPlanning.SelectMany(b => b);
@@ -17,16 +19,19 @@ namespace Softown.Runtime.Infrastructure
             
             var blueprints = neighbourhood.ToList();
 
-            foreach(var f in plot.Settlements)
+            var settlements = plot.Settlements.ToList();
+            for(var i = 0; i < settlements.Count; i++)
             {
-                var selected = neighbourhood.First(b => b.FoundationsWidth == f.Block.Size.x);
+                await Task.Yield();
+                var selected = neighbourhood.First(b => b.FoundationsWidth == settlements[i].Block.Size.x);
                 blueprints.Remove(selected);
 
                 var building = new GameObject(selected.BuildingName, typeof(Building)).GetComponent<Building>();
                 building.transform.SetParent(transform);
                 building.Raise(selected);
 
-                building.transform.position += f.Center.To3DWithY(0);
+                building.transform.position += settlements[i].Center.To3DWithY(0);
+                progress?.Report((float)i / settlements.Count);
             }
 
             SpawnGroundFor(plot);

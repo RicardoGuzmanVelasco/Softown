@@ -51,19 +51,25 @@ namespace Softown.Runtime.Infrastructure
         {
             for(var skipped = 0; skipped < summary.GlobalNamespace.AllChildrenClasses.Count(); skipped++)
             {
-                Debug.Log($"Starting to raise {summary.Name} skipping {skipped} classes");
-                await Task.Yield();
-
-                var sut = new GameObject("", Strategy).GetComponent<Neighbourhood>();
+                var neighbourhood = new GameObject("", Strategy).GetComponent<Neighbourhood>();
 
                 var urbanPlanning = new Architect().Design(summary, skipped);
-                sut.Raise(urbanPlanning);
+                await neighbourhood.Raise(urbanPlanning, new Progress<float>(ReportProgressInTooltip));
+                await Task.Delay(TimeSpan.FromSeconds(.5));
+                CleanTooltip();
 
                 await skipOrdered.Task;
                 skipOrdered = new();
-                Object.Destroy(sut.gameObject);
+                Object.Destroy(neighbourhood.gameObject);
             }
         }
+
+        static void ReportProgressInTooltip(float fromZeroToOne)
+        {
+            FindObjectsOfType<Tooltip>().Single().Progress(fromZeroToOne);
+        }
+
+        static void CleanTooltip() => FindObjectsOfType<Tooltip>().Single().Clean();
 
         void Update()
         {

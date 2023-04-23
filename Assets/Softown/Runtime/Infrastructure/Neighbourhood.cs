@@ -1,4 +1,6 @@
-﻿using Softown.Runtime.Domain;
+﻿using System;
+using System.Threading.Tasks;
+using Softown.Runtime.Domain;
 using Softown.Runtime.Domain.Plotting;
 using UnityEngine;
 
@@ -6,7 +8,7 @@ namespace Softown.Runtime.Infrastructure
 {
     public abstract class Neighbourhood : MonoBehaviour
     {
-        public abstract void Raise(UrbanPlanning urbanPlanning);
+        public abstract Task Raise(UrbanPlanning urbanPlanning, IProgress<float> progress = null);
 
         protected void SpawnGroundFor(Plot plot)
         {

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Softown.Runtime.Domain;
 using Softown.Runtime.Domain.Plotting;
 using UnityEngine;
@@ -7,7 +9,7 @@ namespace Softown.Runtime.Infrastructure
 {
     public sealed class AisledGlobalClasses : Neighbourhood
     {
-        public override void Raise(UrbanPlanning urbanPlanning)
+        public override Task Raise(UrbanPlanning urbanPlanning, IProgress<float> progress = null)
         {
             name = urbanPlanning.Name;
             var neighbourhood = urbanPlanning.Where(d => Namespace.RepresentsGlobal(d.Name)).SelectMany(b => b);
@@ -30,6 +32,8 @@ namespace Softown.Runtime.Infrastructure
             }
 
             SpawnGroundFor(plot);
+            
+            return Task.CompletedTask;
         }
     }
 }

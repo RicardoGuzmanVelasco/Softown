@@ -19,7 +19,7 @@ namespace Softown.Runtime.Infrastructure
             
             var foundations = neighbourhood.Select(b => Foundation.SquareOf(b.FoundationsWidth));
             var plot = new Plot(new GreedySquareUp(), foundations.ToArray());
-            SpawnGroundFor(plot);
+            await SpawnGroundFor(plot);
 
             var settlements = plot.Settlements.ToList();
             for(var i = 0; i < settlements.Count; i++)
@@ -38,10 +38,10 @@ namespace Softown.Runtime.Infrastructure
             }
         }
 
-        void SpawnGroundFor(Plot plot)
+        async Task SpawnGroundFor(Plot plot)
         {
             var ground = new GameObject("Ground");
-            ground.AddComponent<Ground>().Raise(plot);
+            await ground.AddComponent<Ground>().Raise(plot);
             ground.transform.SetParent(transform);
         }
     }

@@ -1,11 +1,13 @@
-﻿using Softown.Runtime.Domain.Plotting;
+﻿using System.Threading.Tasks;
+using DG.Tweening;
+using Softown.Runtime.Domain.Plotting;
 using UnityEngine;
 
 namespace Softown.Runtime.Infrastructure
 {
     public class Ground : MonoBehaviour
     {
-        public void Raise(Plot plot)
+        public Task Raise(Plot plot)
         {
             var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
             ground.transform.SetParent(transform);
@@ -14,7 +16,13 @@ namespace Softown.Runtime.Infrastructure
 
             var padding = new Vector3(1, 0, 1);
             var size = plot.Size.To3DWithY(0.1f) + padding;
+            
             ground.transform.localScale = size;
+            return ground.transform
+                .DOScale(0, .33f)
+                .From()
+                .SetEase(Ease.OutBack)
+                .AsyncWaitForCompletion();
         }
     }
 }

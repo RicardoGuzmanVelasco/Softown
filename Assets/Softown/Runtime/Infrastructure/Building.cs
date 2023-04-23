@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using Softown.Runtime.Domain;
+﻿using Softown.Runtime.Domain;
 using Softown.Runtime.Domain.Plotting;
 using UnityEngine;
+using UnityEngine.Assertions;
 using static UnityEngine.PrimitiveType;
 
 namespace Softown.Runtime.Infrastructure

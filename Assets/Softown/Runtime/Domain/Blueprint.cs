@@ -1,5 +1,4 @@
-﻿using Castle.Core.Internal;
-using UnityEngine.Assertions;
+﻿using UnityEngine.Assertions;
 
 namespace Softown.Runtime.Domain
 {
@@ -13,7 +12,7 @@ namespace Softown.Runtime.Domain
 
         public Blueprint(string buildingName, int floors, int foundationsWidth)
         {
-            Assert.IsFalse(buildingName.IsNullOrEmpty());
+            Assert.IsFalse(string.IsNullOrEmpty(buildingName));
             Assert.IsTrue(floors >= 0);
             Assert.IsTrue(foundationsWidth >= 0);
 

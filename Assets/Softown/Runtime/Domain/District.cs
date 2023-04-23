@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using NUnit.Framework;
+using UnityEngine.Assertions;
 
 namespace Softown.Runtime.Domain
 {
@@ -14,7 +14,7 @@ namespace Softown.Runtime.Domain
 
         public District([NotNull] IEnumerable<Blueprint> blueprints)
         {
-            Assert.IsNotEmpty(blueprints);
+            Assert.IsTrue(blueprints.Any());
             Assert.IsFalse(blueprints.Any(b => b.Equals(Blueprint.Blank)));
 
             this.blueprints = new List<Blueprint>(blueprints);
@@ -25,7 +25,7 @@ namespace Softown.Runtime.Domain
         
         public District(string name, [NotNull] IEnumerable<Blueprint> blueprints)
         {
-            Assert.IsNotEmpty(blueprints);
+            Assert.IsTrue(blueprints.Any());
             Assert.IsFalse(blueprints.Any(b => b.Equals(Blueprint.Blank)));
 
             this.blueprints = new List<Blueprint>(blueprints);

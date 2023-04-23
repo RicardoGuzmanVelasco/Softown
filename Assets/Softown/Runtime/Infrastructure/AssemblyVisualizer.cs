@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Softown.Runtime.Domain;
 using UnityEngine;
 
@@ -7,24 +7,27 @@ namespace Softown.Runtime.Infrastructure
 {
     public class AssemblyVisualizer : MonoBehaviour
     {
-        bool skipOrdered = false;
+        TaskCompletionSource<bool> skipOrdered = new();
         
         public void Visualize(AssemblySummary summary)
         {
-            StartCoroutine(VisualizeSkippingOneAtATime(summary));
+            VisualizeSkippingOneAtATime(summary);
         }
 
-        IEnumerator VisualizeSkippingOneAtATime(AssemblySummary summary)
+        async void VisualizeSkippingOneAtATime(AssemblySummary summary)
         {
             for(var skipped = 0; skipped < summary.GlobalNamespace.AllChildrenClasses.Count(); skipped++)
             {
+                Debug.Log($"Starting to raise {summary.Name} skipping {skipped} classes");
+                await Task.Yield();
+
                 var sut = new GameObject("", typeof(AisledGlobalClasses)).GetComponent<Neighbourhood>();
 
                 var urbanPlanning = new Architect().Design(summary, skipped);
                 sut.Raise(urbanPlanning);
 
-                yield return new WaitUntil(() => skipOrdered); //TODO: usar unitask y un tcs.
-                skipOrdered = false;
+                await skipOrdered.Task;
+                skipOrdered = new();
                 Object.Destroy(sut.gameObject);
             }
         }
@@ -32,7 +35,7 @@ namespace Softown.Runtime.Infrastructure
         void Update()
         {
             if(Input.GetKeyDown(KeyCode.Space))
-                skipOrdered = true;
+                skipOrdered.SetResult(true);
         }
     }
 }

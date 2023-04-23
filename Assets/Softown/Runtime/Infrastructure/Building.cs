@@ -1,4 +1,6 @@
-﻿using Softown.Runtime.Domain;
+﻿using System;
+using DG.Tweening;
+using Softown.Runtime.Domain;
 using Softown.Runtime.Domain.Plotting;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -10,29 +12,32 @@ namespace Softown.Runtime.Infrastructure
     {
         public static readonly Vector3 Ground = Vector3.one;
 
-        public int Floors => (int)transform.localScale.y;
+        Blueprint represented;
+
+        public int Floors => represented.Equals(Blueprint.Blank)
+            ? throw new NotSupportedException()
+            : Math.Max(1, represented.Floors);
 
         public Foundation Foundation => transform.localScale.ToFoundation();
 
         public float WhereIsTheGround => transform.position.y;
-
-        public Blueprint Blueprint { get; private set; }
-
+        
         public void Raise(Blueprint blueprint)
         {
-            GameObject.CreatePrimitive(Cube).transform.SetParent(transform);
+            var cube = GameObject.CreatePrimitive(Cube).transform;
+                cube.SetParent(transform);
 
-            Blueprint = blueprint;
+            represented = blueprint;
 
-            transform.localScale =
-                new Vector3(blueprint.FoundationsWidth, blueprint.Floors + Ground.y, blueprint.FoundationsWidth);
+            cube.localScale = new(blueprint.FoundationsWidth, blueprint.Floors + Ground.y, blueprint.FoundationsWidth);
+
+            cube.DOScaleY(0, .33f).From().SetEase(Ease.OutBack);
             transform.position += Vector3.up * (blueprint.Floors / 2f);
 
             gameObject.AddComponent<Rigidbody>().isKinematic = true;
 
             Assert.IsTrue(Foundation.Size.x > 0);
             Assert.AreEqual(transform.localScale.x, transform.localScale.z, "Ahora mismo solo cimientos cuadrados");
-            Assert.IsTrue(Floors > 0);
         }
 
         void OnMouseEnter()

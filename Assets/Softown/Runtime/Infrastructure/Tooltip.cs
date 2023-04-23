@@ -12,7 +12,7 @@ namespace Softown.Runtime.Infrastructure
         
         public void Hover(Building theBuilding)
         {
-            GetComponentInChildren<TMP_Text>().text = theBuilding.Blueprint.BuildingName;
+            GetComponentInChildren<TMP_Text>().text = theBuilding.name;
         }
         
         public void Clean() => GetComponentInChildren<TMP_Text>().text = "";

@@ -21,6 +21,8 @@ namespace Softown.Runtime.Infrastructure
         public Foundation Foundation => transform.localScale.ToFoundation();
 
         public float WhereIsTheGround => transform.position.y;
+
+        public Vector3 ConcreteDimensions => transform.GetChild(0).localScale;
         
         public void Raise(Blueprint blueprint)
         {
